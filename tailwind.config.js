@@ -15,6 +15,18 @@ module.exports = {
   
   theme: {
     extend: {
+      screens: {
+        'lg-custom': {'min': '1300px'},  // Large devices (1300px and below)
+        'md-custom': {'min': '1200px'},   // Medium devices (768px and below)
+        'sm-custom': {'min': '576px'},   // Small devices (576px and below)
+        'xs-custom': {'min': '350px'},   // Extra small devices (350px and below)
+
+        //Default  Tailwind
+        'xl': {'min': '1280px'},
+        'lg': {'min': '1024'},
+        'md': {'min': '768px'},
+        'md': {'min': '768px'},
+      },
       colors: {
         primary: '#00b14f',
         secondary: '#028241',

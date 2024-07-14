@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="bg-primary text-accent py-2 px-14 rounded-lg">
+        <button class="w-full bg-primary text-accent py-2 rounded-lg">
               <slot></slot>
         </button>
     </div>
