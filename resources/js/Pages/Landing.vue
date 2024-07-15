@@ -80,7 +80,7 @@ export default {
                     <Button
                         class="bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
                     >
-                        <a href="/">Login</a>
+                        <a href="login">Login</a>
                     </Button>
                 </div>
             </nav>
