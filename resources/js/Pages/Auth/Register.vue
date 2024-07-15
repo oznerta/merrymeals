@@ -12,6 +12,43 @@ export default {
         TabsTrigger,
         Input,
     },
+    data() {
+        return {
+            first_name: "",
+            last_name: "",
+            email: "",
+            address: "",
+            phone_number: "",
+            password: "",
+            password_confirmation: "",
+            caregiver_name: "",
+            caregiver_phone: "",
+            csrfToken: document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        };
+    },
+    methods: {
+        async registerMember() {
+            try {
+                const response = await axios.post("/register-member", {
+                    first_name: this.first_name,
+                    last_name: this.last_name,
+                    email: this.email,
+                    address: this.address,
+                    phone_number: this.phone_number,
+                    password: this.password,
+                    password_confirmation: this.password_confirmation,
+                    caregiver_name: this.caregiver_name,
+                    caregiver_phone: this.caregiver_phone,
+                    _token: this.csrfToken,
+                });
+                console.log(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        },
+    },
 };
 </script>
 
@@ -19,7 +56,7 @@ export default {
     <div
         class="flex flex-col bg-accent text-text py-8 px-4 md:px-8 mx-auto max-w-[1900px]"
     >
-        <div class="mb-10">
+        <div class="mb-10 w-12">
             <a href="/" class="flex items-center gap-2 hover:text-primary">
                 <i class="uil uil-backspace text-h2"> </i>
                 Back
@@ -43,96 +80,89 @@ export default {
                 <TabsTrigger class="border border-black" value="members">
                     <div class="hover:text-primary">Members & Caregivers</div>
                 </TabsTrigger>
-                <TabsTrigger class="hover:text-primary" value="volunteers">
-                    Volunteer
+                <TabsTrigger class="border border-black" value="volunteers">
+                    <div class="hover:text-primary">Volunteers</div>
                 </TabsTrigger>
-                <TabsTrigger class="hover:text-primary" value="partner">
-                    Partner
+                <TabsTrigger class="border border-black" value="partner">
+                    <div class="hover:text-primary">Partners</div>
                 </TabsTrigger>
             </TabsList>
 
             <TabsContent value="members">
-                <!------------------------------------------- Member Registration Form ---------------------------------------------------------------->
-
                 <h3 class="text-primary text-h2 mb-5">
                     Sign Up for Meal Assistance
                 </h3>
-
                 <p class="mb-5">
                     If you are a senior, a person with a disability, or a
                     caregiver registering on behalf of someone, please provide
                     your details to join our meal delivery program
                 </p>
-
-                <div class="flex flex-col gap-3 w-[1500px] mb-5">
+                <form
+                    @submit.prevent="registerMember"
+                    class="flex flex-col gap-3 w-[1500px] mb-5"
+                >
                     <div class="flex gap-3">
                         <Input
                             type="text"
-                            name="firstName"
-                            id="FirstName"
+                            v-model="first_name"
                             placeholder="First Name"
+                            required
                         />
                         <Input
                             type="text"
-                            name="lastName"
-                            id="LastName"
+                            v-model="last_name"
                             placeholder="Last Name"
+                            required
                         />
                     </div>
-                    <Input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                    />
+                    <Input type="email" v-model="email" placeholder="Email" />
                     <Input
                         type="text"
-                        name="address"
-                        id="address"
+                        v-model="address"
                         placeholder="Address e.g (City,Street,Floor)"
+                        required
                     />
                     <Input
                         type="tel"
-                        name="pnumber"
-                        id="pnumber"
+                        v-model="phone_number"
                         placeholder="Phone Number"
+                        required
                     />
                     <Input
                         type="password"
-                        name="password"
-                        id="password"
+                        v-model="password"
                         placeholder="Password"
+                        required
                     />
                     <Input
                         type="password"
-                        name="password"
-                        id="password"
+                        v-model="password_confirmation"
                         placeholder="Confirm Password"
+                        required
                     />
-                </div>
 
-                <h3 class="text-primary">Caregiver Details (if applicable)</h3>
-
-                <div class="flex flex-col mb-5 w-[1500px]">
-                    <Input
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Name"
-                    />
-                    <Input
-                        type="tel"
-                        name="pnumber"
-                        id="pnumber"
-                        placeholder="Phone Number"
-                    />
-                </div>
-                <button
-                    class="w-[1500px] bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
-                    type="submit"
-                >
-                    Register for Meals
-                </button>
+                    <h3 class="text-primary">
+                        Caregiver Details (if applicable)
+                    </h3>
+                    <div class="flex flex-col mb-5 w-[1500px]">
+                        <Input
+                            type="text"
+                            v-model="caregiver_name"
+                            placeholder="Name"
+                        />
+                        <Input
+                            type="tel"
+                            v-model="caregiver_phone"
+                            placeholder="Phone Number"
+                        />
+                    </div>
+                    <button
+                        class="w-[1500px] bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                        type="submit"
+                    >
+                        Register for Meals
+                    </button>
+                </form>
             </TabsContent>
 
             <TabsContent value="volunteers">
@@ -286,7 +316,6 @@ export default {
                     default-value="prider"
                     class="gap-3 rounded-sm mb-10 w-[1500px]"
                 >
-                    
                     <TabsList class="gap-3 rounded-sm mb-5">
                         <TabsTrigger value="prider">
                             Partnered Rider
@@ -404,11 +433,10 @@ export default {
                             class="w-[1500px] bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
                             type="submit"
                         >
-                           Become a Partner
+                            Become a Partner
                         </button>
                     </TabsContent>
                 </Tabs>
-               
             </TabsContent>
         </Tabs>
     </div>
