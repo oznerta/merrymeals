@@ -1,6 +1,4 @@
 <script>
-import PrimaryButton from "../../components/Button/primary-button.vue";
-import SecondaryButton from "../../components/Button/secondary-button.vue";
 import {
     Accordion,
     AccordionContent,
@@ -12,8 +10,6 @@ import { Button } from "../shadcn/ui/button";
 
 export default {
     components: {
-        PrimaryButton,
-        SecondaryButton,
         Button,
         Accordion,
         AccordionContent,
