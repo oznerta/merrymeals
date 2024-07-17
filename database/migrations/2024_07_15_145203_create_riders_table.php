@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('riders', function (Blueprint $table) {
             $table->id();
+            $table->string('role')->default('rider'); // Add role column with default value 'member'
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('kitchens', function (Blueprint $table) {
             $table->id();
+            $table->string('role')->default('kitchen'); // Add role column with default value 'member'
             $table->string('restaurant_name');
             $table->string('first_name');
             $table->string('last_name');
