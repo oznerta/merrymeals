@@ -37,17 +37,17 @@ export default {
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col bg-accent">
+    <div class="flex flex-col min-h-screen bg-accent">
         <!-- Header -->
         <header class="text-base">
             <!-- Desktop Navigation (hidden on smaller screens) -->
             <nav
-                class="hidden md-custom:flex items-center w-full bg-accent mx-auto py-4 px-8 shadow"
+                class="items-center w-full px-8 py-4 mx-auto shadow md:hidden md-custom:flex bg-accent"
                 style="position: fixed; top: 0; left: 0; right: 0; z-index: 100"
             >
                 <div>
                     <img
-                        class="w-100 mr-20"
+                        class="mr-20 w-100"
                         src="../../assets/logo.png"
                         alt="logo"
                     />
@@ -79,7 +79,7 @@ export default {
                     </div>
                     <div>
                         <a
-                            class="bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                            class="py-2 rounded-lg bg-primary text-accent px-14 hover:bg-secondary"
                             href="login"
                             >Login</a
                         >
@@ -89,7 +89,7 @@ export default {
 
             <!-- Mobile Navigation (visible on smaller screens) -->
             <nav
-                class="flex items-center w-full bg-accent mx-auto shadow py-4 px-4 md-custom:hidden"
+                class="flex items-center w-full px-4 py-4 mx-auto shadow bg-accent md-custom:hidden"
             >
                 <div class="flex flex-grow">
                     <img
@@ -101,17 +101,17 @@ export default {
 
                 <div class="flex items-center gap-2">
                     <button
-                        class="bg-primary text-accent py-2 px-8 md:px-14 rounded-lg hover:bg-secondary"
+                        class="px-8 py-2 rounded-lg bg-primary text-accent md:px-14 hover:bg-secondary"
                     >
                         <a href="/">Login</a>
                     </button>
 
                     <button
                         @click="toggleMenu"
-                        class="flex md-custom:hidden items-center"
+                        class="flex items-center md-custom:hidden"
                     >
                         <svg
-                            class="w-8 h-8 fill-current text-black"
+                            class="w-8 h-8 text-black fill-current"
                             viewBox="0 0 24 24"
                             xmlns="http://www.w3.org/2000/svg"
                         >
@@ -126,9 +126,9 @@ export default {
             <!-- Mobile Fullscreen Menu (hidden by default) -->
             <div
                 v-if="isMenuOpen"
-                class="fixed inset-0 bg-accent flex justify-center items-center z-50"
+                class="fixed inset-0 z-50 flex items-center justify-center bg-accent"
             >
-                <ul class="text-text text-center">
+                <ul class="text-center text-text">
                     <li class="py-4">
                         <a href="#" class="text-xl">Home</a>
                     </li>
@@ -151,15 +151,15 @@ export default {
         <!-- Main Body -->
 
         <main
-            class="flex flex-col bg-accent text-text py-8 px-4 md:px-8 mx-auto"
+            class="flex flex-col px-4 py-8 mx-auto bg-accent text-text md:px-8"
             style="max-width: 1800px"
         >
             <section
-                class="hero md-custom:mt-20 flex flex-col md-custom:flex-row items-center"
+                class="flex flex-col items-center hero md-custom:mt-20 md-custom:flex-row"
             >
                 <!-- Right side: Full image -->
                 <div
-                    class="w-full md-custom:w-1/2 md-custom:pl-10 order-1 md-custom:order-2"
+                    class="order-1 w-full md-custom:w-1/2 md-custom:pl-10 md-custom:order-2"
                 >
                     <img
                         src="../../assets/hero-img.png"
@@ -170,14 +170,14 @@ export default {
 
                 <!-- Left side: Text content -->
                 <div
-                    class="w-full md-custom:w-1/2 md-custom:pr-10 order-2 md-custom:order-1 mt-6 md-custom:mt-0"
+                    class="order-2 w-full mt-6 md-custom:w-1/2 md-custom:pr-10 md-custom:order-1 md-custom:mt-0"
                 >
                     <h2
-                        class="text-base text-primary md-custom:text-h1 font-bold mb-4"
+                        class="mb-4 text-base font-bold text-primary md-custom:text-h1"
                     >
                         Join Us in Bringing Hope and Warmth
                     </h2>
-                    <p class="text-small lg-custom:text-h3 mb-6">
+                    <p class="mb-6 text-small lg-custom:text-h3">
                         At MerryMeal, we believe in the power of a warm meal to
                         nourish both body and soul. Dedicated to serving
                         qualified adults who face challenges in preparing their
@@ -187,7 +187,7 @@ export default {
                     </p>
 
                     <div
-                        class="flex flex-col mb-10 justify-center gap-3 overflow-hidden md:"
+                        class="flex flex-col justify-center gap-3 mb-10 overflow-hidden md:"
                     >
                         <div>
                             <img src="../../assets/volunteers-img.png" alt="" />
@@ -195,23 +195,25 @@ export default {
                         <p>1,600+ dedicated volunteers and counting!</p>
                     </div>
 
-                    <div class="flex flex-col lg-custom:flex-row gap-5 text-center">
+                    <div
+                        class="flex flex-col gap-5 text-center lg-custom:flex-row"
+                    >
                         <a
                             href="#"
-                            class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                            class="w-full py-2 rounded-lg bg-primary text-accent px-14 hover:bg-secondary"
                             >Get Your Meals</a
                         >
                         <a
                             href="#"
-                            class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
+                            class="w-full py-2 bg-transparent border rounded-lg text-primary px-14 border-primary hover:bg-secondary hover:text-accent"
                             >Donate Now</a
                         >
                     </div>
                 </div>
             </section>
 
-            <section class="about mt-32">
-                <h3 class="text-primary text-h1 mb-5">About Us</h3>
+            <section class="mt-32 about">
+                <h3 class="mb-5 text-primary text-h1">About Us</h3>
                 <p class="mb-5">
                     We are a charitable organization dedicated to ensuring that
                     qualified adults living at home receive nutritious meals
@@ -219,7 +221,7 @@ export default {
                     should go hungry due to age, illness, or disability.
                 </p>
 
-                <h4 class="text-primary text-h3 mb-6">
+                <h4 class="mb-6 text-primary text-h3">
                     Why Choose Merry Meals
                 </h4>
 
@@ -274,7 +276,7 @@ export default {
                     </AccordionItem>
                 </Accordion>
 
-                <h4 class="text-primary text-h3 mt-7 mb-5">
+                <h4 class="mb-5 text-primary text-h3 mt-7">
                     Join Us in Making a Difference
                 </h4>
                 <p class="mb-10">
@@ -286,22 +288,22 @@ export default {
 
                 <div class="flex text-center">
                     <a
-                            href="#"
-                            class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
-                            >Get Your Meals</a
-                        >
+                        href="#"
+                        class="w-full py-2 rounded-lg bg-primary text-accent px-14 hover:bg-secondary"
+                        >Get Your Meals</a
+                    >
                 </div>
             </section>
 
-            <section class="Services mt-32">
-                <h1 class="text-primary text-h1 mb-10">Our Services</h1>
+            <section class="mt-32 Services">
+                <h1 class="mb-10 text-primary text-h1">Our Services</h1>
 
                 <div
-                    class="gap-10 mx-auto md-custom:grid grid-cols-1 lg-custom:grid-cols-2"
+                    class="grid-cols-1 gap-10 mx-auto md-custom:grid lg-custom:grid-cols-2"
                     style="max-width: 1500px"
                 >
                     <div
-                        class="flex gap-4 mb-10 bg-secondary-accent p-7 rounded-lg border-b border-primary shadow-md flex-col mx-auto"
+                        class="flex flex-col gap-4 mx-auto mb-10 border-b rounded-lg shadow-md bg-secondary-accent p-7 border-primary"
                         style="max-width: 550px"
                     >
                         <div
@@ -315,7 +317,7 @@ export default {
                         </div>
 
                         <div>
-                            <h2 class="text-primary text-lg font-medium mb-5">
+                            <h2 class="mb-5 text-lg font-medium text-primary">
                                 Hot Meal Delivery
                             </h2>
                             <p class="text-base">
@@ -327,7 +329,7 @@ export default {
                     </div>
 
                     <div
-                        class="flex gap-4 mb-10 bg-secondary-accent p-7 rounded-lg border-b border-primary shadow-md flex-col mx-auto"
+                        class="flex flex-col gap-4 mx-auto mb-10 border-b rounded-lg shadow-md bg-secondary-accent p-7 border-primary"
                         style="max-width: 550px"
                     >
                         <div
@@ -340,7 +342,7 @@ export default {
                             />
                         </div>
                         <div>
-                            <h2 class="text-primary text-lg font-medium mb-5">
+                            <h2 class="mb-5 text-lg font-medium text-primary">
                                 Frozen Meal Service
                             </h2>
                             <p class="text-base">
@@ -352,7 +354,7 @@ export default {
                     </div>
 
                     <div
-                        class="flex gap-4 mb-10 bg-secondary-accent p-7 rounded-lg border-b border-primary shadow-md flex-col mx-auto"
+                        class="flex flex-col gap-4 mx-auto mb-10 border-b rounded-lg shadow-md bg-secondary-accent p-7 border-primary"
                         style="max-width: 550px"
                     >
                         <div
@@ -365,7 +367,7 @@ export default {
                             />
                         </div>
                         <div>
-                            <h2 class="text-primary text-lg font-medium mb-5">
+                            <h2 class="mb-5 text-lg font-medium text-primary">
                                 Nutritional Support
                             </h2>
                             <p class="text-base">
@@ -377,7 +379,7 @@ export default {
                     </div>
 
                     <div
-                        class="flex gap-4 mb-10 bg-secondary-accent p-7 rounded-lg border-b border-primary shadow-md flex-col mx-auto"
+                        class="flex flex-col gap-4 mx-auto mb-10 border-b rounded-lg shadow-md bg-secondary-accent p-7 border-primary"
                         style="max-width: 550px"
                     >
                         <div
@@ -390,7 +392,7 @@ export default {
                             />
                         </div>
                         <div>
-                            <h2 class="text-primary text-lg font-medium mb-5">
+                            <h2 class="mb-5 text-lg font-medium text-primary">
                                 Volunteer Oppurtunities
                             </h2>
                             <p class="text-base">
