@@ -271,15 +271,17 @@ const registerKitchen = () => {
 
                 <!----------------------------------- Partnered Kitchen Registration -------------------------------------------------------->
                 <TabsContent value="partner">
-                    <h3 class="text-primary text-h1 mb-5">Partner With Us</h3>
+                    <h3 class="text-primary text-h2 mb-5">Partner With Us</h3>
                     <p class="mb-5">
                         We are always looking to expand our network of partners.
                         If your organization is interested in collaborating with
                         MerryMeal, please provide your details below.
                     </p>
 
-                    <Tabs default-value="prider" class="gap-3 rounded-sm mb-10 max-w-[1000px]">
-                        <TabsList class="gap-3 rounded-sm mb-5">
+                    <p class="text-primary mb-3">Area of Interest</p>
+
+                    <Tabs default-value="prider" class="gap-3 mb-10 max-w-[1000px]">
+                        <TabsList class="gap-3 border border-text rounded-lg mb-5">
                             <TabsTrigger value="prider">
                                 Partnered Rider
                             </TabsTrigger>
