@@ -27,7 +27,9 @@ export default {
                 <CardTitle>{$menus.meal_name}</CardTitle>
                 <CardDescription>{$menus.description}</CardDescription>
             </div>
-            <img src="" alt="A photo of a delicious meal" />
+            <div>
+                <img src="" alt="A photo of a delicious meal" />
+            </div>
         </CardContent>
     </Card>
 </template>
