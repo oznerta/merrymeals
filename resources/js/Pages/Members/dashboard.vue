@@ -3,6 +3,7 @@ import MemberLayout from "../Layouts/MemberLayout.vue";
 // shadcn-vue imports
 import { Button } from "../../shadcn/ui/button";
 import resto_card from "../../Shared_Component/resto_card.vue";
+import meal_card from "../../Shared_Component/meal_card.vue";
 
 import {
     Card,
@@ -16,6 +17,7 @@ import {
 export default {
     components: {
         resto_card,
+        meal_card,
         Button,
         Card,
         CardContent,
@@ -55,6 +57,7 @@ export default {
 
                         <div class="flex gap-3 auto-rows-fr">
                             <resto_card></resto_card>
+                            <meal_card></meal_card>
                         </div>
                     </div>
                 </section>
