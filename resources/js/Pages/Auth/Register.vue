@@ -2,6 +2,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/ui/tabs";
 import { Input } from "../../shadcn/ui/input";
 import { Button } from "../../shadcn/ui/button";
+import { ref } from 'vue';
 
 export default {
     components: {
@@ -19,12 +20,50 @@ export default {
 <script setup>
 import { useForm } from "@inertiajs/vue3";
 
+const getLocation = async (form) => {
+  console.log("Attempting to get location...");
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        console.log("Got position:", position);
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`
+          );
+          const data = await response.json();
+          console.log("Location data:", data);
+
+          // Extract address components
+          const address = data.address;
+          form.street_address = address.road || address.pedestrian || address.cycleway;
+          form.city = address.city || address.town || address.village;
+          form.state = address.state;
+          form.postal_code = address.postcode;
+        } catch (error) {
+          console.error("Error fetching location:", error);
+        }
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+      }
+    );
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+};
+
+
 // member form request-------------------------------------------------------------------
 const memberForm = useForm({
     first_name: null,
     last_name: null,
     email: null,
-    address: null,
+    street_address: null,
+    city: null,
+    state: null,
+    postal_code: null,
     phone_number: null,
     password: null,
     password_confirmation: null,
@@ -32,8 +71,12 @@ const memberForm = useForm({
     caregiver_phone: null,
 });
 
+const getMemberLocation = () => {
+  getLocation(memberForm);
+};
+
 const registerMember = () => {
-    memberForm.post("/register", {
+    memberForm.post("/register/member", {
         onError: () => memberForm.reset("password", "password_confirmation"),
     });
 };
@@ -43,17 +86,27 @@ const riderForm = useForm({
     first_name: null,
     last_name: null,
     email: null,
+    street_address: null,
+    city: null,
+    state: null,
+    postal_code: null,
     address: null,
     phone_number: null,
     password: null,
     password_confirmation: null,
 });
 
+const getRiderLocation = () => {
+  getLocation(riderForm);
+};
+
+
 const registerRider = () => {
-    riderForm.post("/register-rider", {
+    riderForm.post("/register/rider", {
         onError: () => riderForm.reset("password", "password_confirmation"),
     });
 };
+
 
 // kitchen form request------------------------------------------------------------------------
 const kitchenForm = useForm({
@@ -61,14 +114,22 @@ const kitchenForm = useForm({
     first_name: null,
     last_name: null,
     email: null,
+    street_address: null,
+    city: null,
+    state: null,
+    postal_code: null,
     address: null,
     phone_number: null,
     password: null,
     password_confirmation: null,
 });
 
+const getKitchenLocation = () => {
+  getLocation(kitchenForm);
+};
+
 const registerKitchen = () => {
-    kitchenForm.post("/register-rider", {
+    kitchenForm.post("/register/kitchen", {
         onError: () => kitchenForm.reset("password", "password_confirmation"),
     });
 };
@@ -99,18 +160,13 @@ const registerKitchen = () => {
             </div>
             <h3 class="text-primary text-h2 mb-5">Types of Registration</h3>
             <Tabs default-value="members" class="max-w-[1000px]">
-                <TabsList class="gap-10 mb-10 border border-text px-10 rounded-lg grid w-full grid-cols-3">
+                <TabsList class="mb-10 grid w-full border-text grid-cols-3 mx-auto">
                     <TabsTrigger value="members">
                         Members & Caregivers
                     </TabsTrigger>
-                    <TabsTrigger value="volunteers">
-                        Volunteers
-                    </TabsTrigger>
-                    <TabsTrigger value="partner">
-                        Partners
-                    </TabsTrigger>
+                    <TabsTrigger value="volunteers"> Volunteers </TabsTrigger>
+                    <TabsTrigger value="partner"> Partners </TabsTrigger>
                 </TabsList>
-
 
                 <!-- -----------------------------------Members Form --------------------------------------------------------------->
                 <TabsContent value="members">
@@ -122,40 +178,60 @@ const registerKitchen = () => {
                         caregiver registering on behalf of someone, please
                         provide your details to join our meal delivery program
                     </p>
-                    <form @submit.prevent="registerMember" class="flex flex-col gap-2 max-w-[1000px] mb-5">
-                        <Input type="text" v-model="memberForm.first_name" placeholder="First Name" required />
-                        <small>{{ memberForm.errors.first_name }}</small>
-                        <Input type="text" v-model="memberForm.last_name" placeholder="Last Name" required />
-                        <small>{{ memberForm.errors.last_name }}</small>
+                    <form @submit.prevent="registerMember" class="max-w-[1000px] mx-auto">
+                        <!-- Personal Information -->
+                        <div class="flex flex-col mb-10 gap-3">
+                            <h2 class="text-primary mt-10 mb-4">
+                                Personal Information
+                            </h2>
 
-                        <Input type="email" v-model="memberForm.email" placeholder="Email" required />
-                        <small>{{ memberForm.errors.email }}</small>
+                            <Input type="text" v-model="memberForm.first_name" placeholder="First Name" required />
+                            <small>{{ memberForm.errors.first_name }}</small>
 
-                        <Input type="text" v-model="memberForm.address" placeholder="Address e.g (City,Street,Floor)"
-                            required />
-                        <small>{{ memberForm.errors.address }}</small>
+                            <Input type="text" v-model="memberForm.last_name" placeholder="Last Name" required />
+                            <small>{{ memberForm.errors.last_name }}</small>
 
-                        <Input type="tel" v-model="memberForm.phone_number" placeholder="Phone Number" required />
-                        <small>{{ memberForm.errors.phone_number }}</small>
+                            <Input type="email" v-model="memberForm.email" placeholder="Email" required />
+                            <small>{{ memberForm.errors.email }}</small>
 
-                        <Input type="password" v-model="memberForm.password" placeholder="Password" required />
-                        <small>{{ memberForm.errors.password }}</small>
+                            <Input type="tel" v-model="memberForm.phone_number" placeholder="Phone Number" required />
+                            <small>{{ memberForm.errors.phone_number }}</small>
 
-                        <Input type="password" v-model="memberForm.password_confirmation" placeholder="Confirm Password"
-                            required />
-                        <small>{{
-                            memberForm.errors.password_confirmation
-                            }}</small>
+                            <Input type="password" v-model="memberForm.password" placeholder="Password" required />
+                            <small>{{ memberForm.errors.password }}</small>
 
-                        <h3 class="text-primary">
-                            Caregiver Details (if applicable)
-                        </h3>
-                        <div class="flex flex-col gap-2 mb-5 max-w-[1000px]">
+                            <Input type="password" v-model="memberForm.password_confirmation"
+                                placeholder="Confirm Password" required />
+
+                            <h2 class="text-primary mt-10 mb-4">
+                                Home Address
+                            </h2>
+                            <Input type="text" v-model="memberForm.street_address" placeholder="Street" required />
+                            <small>{{ memberForm.errors.street }}</small>
+
+                            <Input type="text" v-model="memberForm.city" placeholder="City" required />
+                            <small>{{ memberForm.errors.city }}</small>
+
+                            <Input type="text" v-model="memberForm.state" placeholder="State" required />
+                            <small>{{ memberForm.errors.state }}</small>
+
+                            <Input type="text" v-model="memberForm.postal_code" placeholder="Postal Code" required />
+                            <small>{{ memberForm.errors.postal_code }}</small>
+                            <button @click="getMemberLocation"
+                                class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
+                                type="button">
+                                Get Your Location
+                            </button>
+
+                            <h2 class="text-primary mt-10 mb-2">
+                                Caregiver Details (if applicable)
+                            </h2>
                             <Input type="text" v-model="memberForm.caregiver_name" placeholder="Name" />
                             <Input type="tel" v-model="memberForm.caregiver_phone" placeholder="Phone Number" />
                         </div>
 
-                        <button class="max-w-[1000px] bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                        <!-- Submit Button -->
+                        <button class="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-secondary"
                             type="submit">
                             Register for Meals
                         </button>
@@ -178,7 +254,7 @@ const registerKitchen = () => {
 
                     <Tabs default-value="rider" class="gap-3 rounded-sm mb-10">
                         <!------------------------------------------ Volunteer Form Selection ----------------------------------->
-                        <TabsList class="gap-3 border border-text rounded-lg grid-cols-2 mb-5">
+                        <TabsList class="gap-3 rounded-lg grid-cols-2 mb-5">
                             <TabsTrigger value="rider">
                                 Volunteer as a Rider
                             </TabsTrigger>
@@ -189,82 +265,129 @@ const registerKitchen = () => {
 
                         <!------------------------------------------ volunteer rider registration ------------------------------->
                         <TabsContent value="rider">
-                            <h3 class="text-primary mb-5">
+                            <h3 class="text-primary mt-5 mb-5">
                                 Rider (Meal Delivery)
                             </h3>
 
                             <form class="flex flex-col gap-3 mb-5" @submit.prevent="registerRider">
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Personal Information
+                                </h2>
                                 <Input type="text" v-model="riderForm.first_name" placeholder="First Name" required />
                                 <small>{{ riderForm.errors.first_name }}</small>
+
                                 <Input type="text" v-model="riderForm.last_name" placeholder="Last Name" required />
                                 <small>{{ riderForm.errors.last_name }}</small>
 
                                 <Input type="email" v-model="riderForm.email" placeholder="Email" required />
                                 <small>{{ riderForm.errors.email }}</small>
 
-                                <Input type="text" v-model="riderForm.address"
-                                    placeholder="Address e.g (City,Street,Floor)" required />
-                                <small>{{ riderForm.errors.address }}</small>
-
                                 <Input type="tel" v-model="riderForm.phone_number" placeholder="Phone Number"
                                     required />
-                                <small>{{ riderForm.errors.phone_number }}</small>
+                                <small>{{
+                                    riderForm.errors.phone_number
+                                    }}</small>
 
                                 <Input type="password" v-model="riderForm.password" placeholder="Password" required />
                                 <small>{{ riderForm.errors.password }}</small>
 
                                 <Input type="password" v-model="riderForm.password_confirmation"
                                     placeholder="Confirm Password" required />
-                                <small>{{
-                                    riderForm.errors.password_confirmation
-                                    }}</small>
+
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Home Address
+                                </h2>
+
+                                <Input type="text" v-model="riderForm.street_address" placeholder="Street" required />
+                                <small>{{ riderForm.errors.street }}</small>
+
+                                <Input type="text" v-model="riderForm.city" placeholder="City" required />
+                                <small>{{ riderForm.errors.city }}</small>
+
+                                <Input type="text" v-model="riderForm.state" placeholder="State" required />
+                                <small>{{ riderForm.errors.state }}</small>
+
+                                <Input type="text" v-model="riderForm.postal_code" placeholder="Postal Code" required />
+                                <small>{{ riderForm.errors.postal_code }}</small>
+                                <button @click="getRiderLocation"
+                                class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
+                                type="button">
+                                Get Your Location
+                                </button>
+
                                 <button class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
                                     type="submit">
-                                    Join as a Member
+                                    Become a Volunteer
                                 </button>
                             </form>
-
                         </TabsContent>
 
                         <!--------------------------------------------- Kitchen volunteer registration -------------------------------->
                         <TabsContent value="kitchen">
-                            <h3 class="text-primary mb-5">
+                            <h3 class="text-primary mt-5 mb-5">
                                 Kitchen (Meal Provider)
                             </h3>
 
                             <form class="flex flex-col gap-3 mb-5" @submit.prevent="registerKitchen">
-                                <Input type="text" v-model="kitchenForm.restaurant_name" placeholder="Restaurant Name" required />
-                                <small>{{ kitchenForm.errors.restaurant_name }}</small>
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Personal Information
+                                </h2>
+                                <Input type="text" v-model="kitchenForm.restaurant_name" placeholder="Restaurant Name"
+                                    required />
+                                <small>{{
+                                    kitchenForm.errors.restaurant_name
+                                    }}</small>
+
                                 <Input type="text" v-model="kitchenForm.first_name" placeholder="First Name" required />
-                                <small>{{ kitchenForm.errors.first_name }}</small>
+                                <small>{{
+                                    kitchenForm.errors.first_name
+                                    }}</small>
+
                                 <Input type="text" v-model="kitchenForm.last_name" placeholder="Last Name" required />
-                                <small>{{ kitchenForm.errors.last_name }}</small>
+                                <small>{{
+                                    kitchenForm.errors.last_name
+                                    }}</small>
 
                                 <Input type="email" v-model="kitchenForm.email" placeholder="Email" required />
                                 <small>{{ kitchenForm.errors.email }}</small>
 
-                                <Input type="text" v-model="kitchenForm.address"
-                                    placeholder="Address e.g (City,Street,Floor)" required />
-                                <small>{{ kitchenForm.errors.address }}</small>
-
                                 <Input type="tel" v-model="kitchenForm.phone_number" placeholder="Phone Number"
                                     required />
-                                <small>{{ kitchenForm.errors.phone_number }}</small>
+                                <small>{{
+                                    kitchenForm.errors.phone_number
+                                    }}</small>
 
                                 <Input type="password" v-model="kitchenForm.password" placeholder="Password" required />
                                 <small>{{ kitchenForm.errors.password }}</small>
 
                                 <Input type="password" v-model="kitchenForm.password_confirmation"
                                     placeholder="Confirm Password" required />
-                                <small>{{
-                                    kitchenForm.errors.password_confirmation
-                                    }}</small>
+
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Home Address
+                                </h2>
+                                <Input type="text" v-model="kitchenForm.street_address" placeholder="Street" required />
+                                <small>{{ kitchenForm.errors.street }}</small>
+
+                                <Input type="text" v-model="kitchenForm.city" placeholder="City" required />
+                                <small>{{ kitchenForm.errors.city }}</small>
+
+                                <Input type="text" v-model="kitchenForm.state" placeholder="State" required />
+                                <small>{{ kitchenForm.errors.state }}</small>
+
+                                <Input type="text" v-model="kitchenForm.postal_code" placeholder="Postal Code" required />
+                                <small>{{ kitchenForm.errors.postal_code }}</small>
+                                <button @click="getKitchenLocation"
+                                class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
+                                type="button">
+                                Get Your Location
+                                </button>
+
                                 <button class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
                                     type="submit">
-                                    Join as a Member
+                                    Become a Volunteer
                                 </button>
                             </form>
-
                         </TabsContent>
                     </Tabs>
                 </TabsContent>
@@ -281,7 +404,7 @@ const registerKitchen = () => {
                     <p class="text-primary mb-3">Area of Interest</p>
 
                     <Tabs default-value="prider" class="gap-3 mb-10 max-w-[1000px]">
-                        <TabsList class="gap-3 border border-text rounded-lg mb-5">
+                        <TabsList class="gap-3 rounded-lg mb-5">
                             <TabsTrigger value="prider">
                                 Partnered Rider
                             </TabsTrigger>
@@ -297,30 +420,51 @@ const registerKitchen = () => {
                             </h3>
 
                             <form class="flex flex-col gap-3 mb-5" @submit.prevent="registerRider">
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Personal Information
+                                </h2>
                                 <Input type="text" v-model="riderForm.first_name" placeholder="First Name" required />
                                 <small>{{ riderForm.errors.first_name }}</small>
+
                                 <Input type="text" v-model="riderForm.last_name" placeholder="Last Name" required />
                                 <small>{{ riderForm.errors.last_name }}</small>
 
                                 <Input type="email" v-model="riderForm.email" placeholder="Email" required />
                                 <small>{{ riderForm.errors.email }}</small>
 
-                                <Input type="text" v-model="riderForm.address"
-                                    placeholder="Address e.g (City,Street,Floor)" required />
-                                <small>{{ riderForm.errors.address }}</small>
-
                                 <Input type="tel" v-model="riderForm.phone_number" placeholder="Phone Number"
                                     required />
-                                <small>{{ riderForm.errors.phone_number }}</small>
+                                <small>{{
+                                    riderForm.errors.phone_number
+                                    }}</small>
 
                                 <Input type="password" v-model="riderForm.password" placeholder="Password" required />
                                 <small>{{ riderForm.errors.password }}</small>
 
                                 <Input type="password" v-model="riderForm.password_confirmation"
                                     placeholder="Confirm Password" required />
-                                <small>{{
-                                    riderForm.errors.password_confirmation
-                                    }}</small>
+
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Home Address
+                                </h2>
+
+                                <Input type="text" v-model="riderForm.street_address" placeholder="Street" required />
+                                <small>{{ riderForm.errors.street }}</small>
+
+                                <Input type="text" v-model="riderForm.city" placeholder="City" required />
+                                <small>{{ riderForm.errors.city }}</small>
+
+                                <Input type="text" v-model="riderForm.state" placeholder="State" required />
+                                <small>{{ riderForm.errors.state }}</small>
+
+                                <Input type="text" v-model="riderForm.postal_code" placeholder="Postal Code" required />
+                                <small>{{ riderForm.errors.postala_code }}</small>
+                                <button @click="getRiderLocation"
+                                class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
+                                type="button">
+                                Get Your Location
+                                </button>
+
                                 <button class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
                                     type="submit">
                                     Become a Partner
@@ -335,32 +479,60 @@ const registerKitchen = () => {
                             </h3>
 
                             <form class="flex flex-col gap-3 mb-5" @submit.prevent="registerKitchen">
-                                <Input type="text" v-model="kitchenForm.restaurant_name" placeholder="Restaurant Name" required />
-                                <small>{{ kitchenForm.errors.restaurant_name }}</small>
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Personal Information
+                                </h2>
+                                <Input type="text" v-model="kitchenForm.restaurant_name" placeholder="Restaurant Name"
+                                    required />
+                                <small>{{
+                                    kitchenForm.errors.restaurant_name
+                                    }}</small>
+
                                 <Input type="text" v-model="kitchenForm.first_name" placeholder="First Name" required />
-                                <small>{{ kitchenForm.errors.first_name }}</small>
+                                <small>{{
+                                    kitchenForm.errors.first_name
+                                    }}</small>
+
                                 <Input type="text" v-model="kitchenForm.last_name" placeholder="Last Name" required />
-                                <small>{{ kitchenForm.errors.last_name }}</small>
+                                <small>{{
+                                    kitchenForm.errors.last_name
+                                    }}</small>
 
                                 <Input type="email" v-model="kitchenForm.email" placeholder="Email" required />
                                 <small>{{ kitchenForm.errors.email }}</small>
 
-                                <Input type="text" v-model="kitchenForm.address"
-                                    placeholder="Address e.g (City,Street,Floor)" required />
-                                <small>{{ kitchenForm.errors.address }}</small>
-
                                 <Input type="tel" v-model="kitchenForm.phone_number" placeholder="Phone Number"
                                     required />
-                                <small>{{ kitchenForm.errors.phone_number }}</small>
+                                <small>{{
+                                    kitchenForm.errors.phone_number
+                                    }}</small>
 
                                 <Input type="password" v-model="kitchenForm.password" placeholder="Password" required />
                                 <small>{{ kitchenForm.errors.password }}</small>
 
                                 <Input type="password" v-model="kitchenForm.password_confirmation"
                                     placeholder="Confirm Password" required />
-                                <small>{{
-                                    kitchenForm.errors.password_confirmation
-                                    }}</small>
+
+                                <h2 class="text-primary mt-10 mb-4">
+                                    Home Address
+                                </h2>
+                                <Input type="text" v-model="kitchenForm.street_address" placeholder="Street" required />
+                                <small>{{ kitchenForm.errors.street }}</small>
+
+                                <Input type="text" v-model="kitchenForm.city" placeholder="City" required />
+                                <small>{{ kitchenForm.errors.city }}</small>
+
+                                <Input type="text" v-model="kitchenForm.state" placeholder="State" required />
+                                <small>{{ kitchenForm.errors.state }}</small>
+
+                                <Input type="text" v-model="kitchenForm.postal_code" placeholder="Postal Code" required />
+                                <small>{{ kitchenForm.errors.postal_code }}</small>
+                                <button @click="getKitchenLocation"
+                                class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
+                                type="button">
+                                Get Your Location
+                                </button>
+
                                 <button class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
                                     type="submit">
                                     Become a Partner
