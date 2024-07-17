@@ -12,44 +12,31 @@ export default {
         TabsTrigger,
         Input,
     },
-    data() {
-        return {
-            first_name: "",
-            last_name: "",
-            email: "",
-            address: "",
-            phone_number: "",
-            password: "",
-            password_confirmation: "",
-            caregiver_name: "",
-            caregiver_phone: "",
-            csrfToken: document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content"),
-        };
-    },
-    methods: {
-        async registerMember() {
-            try {
-                const response = await axios.post("/register-member", {
-                    first_name: this.first_name,
-                    last_name: this.last_name,
-                    email: this.email,
-                    address: this.address,
-                    phone_number: this.phone_number,
-                    password: this.password,
-                    password_confirmation: this.password_confirmation,
-                    caregiver_name: this.caregiver_name,
-                    caregiver_phone: this.caregiver_phone,
-                    _token: this.csrfToken,
-                });
-                console.log(response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        },
-    },
 };
+</script>
+
+<!-------------------------------------- Setup ----------------------------------------------->
+<script setup>
+import { reactive } from "vue";
+import { useForm } from '@inertiajs/vue3';
+
+const memberForm = useForm({
+  first_name: null,
+  last_name: null,
+  email: null,
+  address: null,
+  phone_number: null,
+  password: null,
+  password_confirmation: null,
+  caregiver_name: null,
+  caregiver_phone: null
+});
+
+const registerMember = () => {
+  memberForm.post('/register', {
+    onError: () => memberForm.reset("password", "password_confirmation"),
+  });
+}
 </script>
 
 <template>
@@ -104,42 +91,59 @@ export default {
                     <div class="flex gap-3">
                         <Input
                             type="text"
-                            v-model="first_name"
+                            v-model="memberForm.first_name"
                             placeholder="First Name"
                             required
                         />
+                        <small>{{ memberForm.errors.first_name }}</small>
                         <Input
                             type="text"
-                            v-model="last_name"
+                            v-model="memberForm.last_name"
                             placeholder="Last Name"
                             required
                         />
+                        <small>{{ memberForm.errors.last_name }}</small>
                     </div>
-                    <Input type="email" v-model="email" placeholder="Email" />
+
+                    <Input
+                        type="email"
+                        v-model="memberForm.email"
+                        placeholder="Email"
+                        required
+                    />
+                    <small>{{ memberForm.errors.email }}</small>
+
                     <Input
                         type="text"
-                        v-model="address"
+                        v-model="memberForm.address"
                         placeholder="Address e.g (City,Street,Floor)"
                         required
                     />
+                    <small>{{ memberForm.errors.address }}</small>
+
                     <Input
                         type="tel"
-                        v-model="phone_number"
+                        v-model="memberForm.phone_number"
                         placeholder="Phone Number"
                         required
                     />
+                    <small>{{ memberForm.errors.phone_number }}</small>
+
                     <Input
                         type="password"
-                        v-model="password"
+                        v-model="memberForm.password"
                         placeholder="Password"
                         required
                     />
+                    <small>{{ memberForm.errors.password }}</small>
+
                     <Input
                         type="password"
-                        v-model="password_confirmation"
+                        v-model="memberForm.password_confirmation"
                         placeholder="Confirm Password"
                         required
                     />
+                    <small>{{ memberForm.errors.password_confirmation }}</small>
 
                     <h3 class="text-primary">
                         Caregiver Details (if applicable)
@@ -147,15 +151,16 @@ export default {
                     <div class="flex flex-col mb-5 w-[1500px]">
                         <Input
                             type="text"
-                            v-model="caregiver_name"
+                            v-model="memberForm.caregiver_name"
                             placeholder="Name"
                         />
                         <Input
                             type="tel"
-                            v-model="caregiver_phone"
+                            v-model="memberForm.caregiver_phone"
                             placeholder="Phone Number"
                         />
                     </div>
+
                     <button
                         class="w-[1500px] bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
                         type="submit"

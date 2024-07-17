@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
+        'guard' => env('AUTH_GUARD', 'member'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
     ],
 
@@ -36,9 +36,17 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'member' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'members', // Guard for members
+        ],
+        'rider' => [
+            'driver' => 'session',
+            'provider' => 'riders', // Guard for riders
+        ],
+        'kitchen' => [
+            'driver' => 'session',
+            'provider' => 'kitchens', // Guard for kitchens
         ],
     ],
 
@@ -60,15 +68,20 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'members' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => App\Models\Member::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'riders' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Rider::class,
+        ],
+
+        'kitchens' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Kitchen::class,
+        ],
     ],
 
     /*

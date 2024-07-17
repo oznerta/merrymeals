@@ -77,11 +77,10 @@ export default {
                     <div class="hover:text-primary">
                         <a href="register">Register</a>
                     </div>
-                    <Button
-                        class="bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                    <div
                     >
-                        <a href="login">Login</a>
-                    </Button>
+                        <a class="bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary" href="login">Login</a>
+                    </div>
                 </div>
             </nav>
 
