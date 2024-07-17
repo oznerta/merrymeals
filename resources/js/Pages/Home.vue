@@ -77,9 +77,12 @@ export default {
                     <div class="hover:text-primary">
                         <a href="register">Register</a>
                     </div>
-                    <div
-                    >
-                        <a class="bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary" href="login">Login</a>
+                    <div>
+                        <a
+                            class="bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                            href="login"
+                            >Login</a
+                        >
                     </div>
                 </div>
             </nav>
@@ -149,67 +152,60 @@ export default {
 
         <main
             class="flex flex-col bg-accent text-text py-8 px-4 md:px-8 mx-auto"
-            style="max-width: 1900px"
+            style="max-width: 1800px"
         >
-            <section class="hero md:mt-20">
+            <section
+                class="hero md-custom:mt-20 flex flex-col md-custom:flex-row items-center"
+            >
+                <!-- Right side: Full image -->
                 <div
-                    class="flex flex-col-reverse md:flex-row items-center gap-5"
+                    class="w-full md-custom:w-1/2 md-custom:pl-10 order-1 md-custom:order-2"
                 >
-                    <div class="md:w-1/2 flex flex-col">
-                        <div style="max-width: 700px">
-                            <h1
-                                class="text-primary text-h2 mb-5 font-semi-bold md:text-h1 lg:text-big md:mb-10"
-                            >
-                                Join Us in Bringing Hope and Warmth
-                            </h1>
+                    <img
+                        src="../../assets/hero-img.png"
+                        alt="Image"
+                        class="w-full h-auto rounded-lg"
+                    />
+                </div>
 
-                            <p
-                                class="text-small font-normal mb-3 md:text-base md:mb-5"
-                            >
-                                At MerryMeal, we believe in the power of a warm
-                                meal to nourish both body and soul. Dedicated to
-                                serving qualified adults who face challenges in
-                                preparing their meals, we deliver not just food,
-                                but also compassion and companionship. Together,
-                                we're making sure no one is left hungry or
-                                forgotten.
-                            </p>
+                <!-- Left side: Text content -->
+                <div
+                    class="w-full md-custom:w-1/2 md-custom:pr-10 order-2 md-custom:order-1 mt-6 md-custom:mt-0"
+                >
+                    <h2
+                        class="text-base text-primary md-custom:text-h1 font-bold mb-4"
+                    >
+                        Join Us in Bringing Hope and Warmth
+                    </h2>
+                    <p class="text-small lg-custom:text-h3 mb-6">
+                        At MerryMeal, we believe in the power of a warm meal to
+                        nourish both body and soul. Dedicated to serving
+                        qualified adults who face challenges in preparing their
+                        meals, we deliver not just food, but also compassion and
+                        companionship. Together, we're making sure no one is
+                        left hungry or forgotten.
+                    </p>
 
-                            <div
-                                class="flex flex-col mb-10 justify-center gap-3 overflow-hidden md:"
-                            >
-                                <div>
-                                    <img
-                                        src="../../assets/volunteers-img.png"
-                                        alt=""
-                                    />
-                                </div>
-                                <p>1,600+ dedicated volunteers and counting!</p>
-                            </div>
-
-                            <div
-                                class="flex flex-col gap-4 text-base font-normal md:flex-row"
-                            >
-                                <button
-                                    class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
-                                >
-                                    <a href="/">Get Your Meals</a>
-                                </button>
-                                <button
-                                    class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
-                                >
-                                    <a href="/">Donate Now</a>
-                                </button>
-                            </div>
+                    <div
+                        class="flex flex-col mb-10 justify-center gap-3 overflow-hidden md:"
+                    >
+                        <div>
+                            <img src="../../assets/volunteers-img.png" alt="" />
                         </div>
+                        <p>1,600+ dedicated volunteers and counting!</p>
                     </div>
 
-                    <div class="md:w-1/2 w-full mb-4 md:mb-0">
-                        <img
-                            class="w-full h-auto"
-                            src="../../assets/hero-img.png"
-                            alt="image of people doing volunteer work"
-                        />
+                    <div class="flex flex-col lg-custom:flex-row gap-5 text-center">
+                        <a
+                            href="#"
+                            class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                            >Get Your Meals</a
+                        >
+                        <a
+                            href="#"
+                            class="w-full bg-transparent text-primary py-2 px-14 rounded-lg border-primary border hover:bg-secondary hover:text-accent"
+                            >Donate Now</a
+                        >
                     </div>
                 </div>
             </section>
@@ -257,7 +253,7 @@ export default {
                 <Accordion class="mb-5" type="single" collapsible>
                     <AccordionItem value="item-1">
                         <AccordionTrigger
-                            >Volunteer and Partner Engagement</AccordionTrigger
+                            >Volunteer & Partner Engagement</AccordionTrigger
                         >
                         <AccordionContent>
                             A huge community of partner and volunteer workers,
@@ -288,18 +284,20 @@ export default {
                     and promoting well-being in our community.
                 </p>
 
-                <button
-                    class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
-                >
-                    <a href="/">Become A Volunteer</a>
-                </button>
+                <div class="flex text-center">
+                    <a
+                            href="#"
+                            class="w-full bg-primary text-accent py-2 px-14 rounded-lg hover:bg-secondary"
+                            >Get Your Meals</a
+                        >
+                </div>
             </section>
 
             <section class="Services mt-32">
                 <h1 class="text-primary text-h1 mb-10">Our Services</h1>
 
                 <div
-                    class="gap-10 mx-auto md-custom:grid grid-cols-1 xl:grid-cols-2"
+                    class="gap-10 mx-auto md-custom:grid grid-cols-1 lg-custom:grid-cols-2"
                     style="max-width: 1500px"
                 >
                     <div
@@ -310,7 +308,10 @@ export default {
                             class="overflow-hidden rounded-lg"
                             style="max-width: 500px; max-height: 300px"
                         >
-                            <img class="rounded-lg" src="../../assets/pic1.jpg" />
+                            <img
+                                class="rounded-lg"
+                                src="../../assets/pic1.jpg"
+                            />
                         </div>
 
                         <div>

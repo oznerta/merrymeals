@@ -9,7 +9,14 @@ body {
 }
 
 
-
+.tabs-active {
+    /* Active tab styles */
+    color: green;
+}
+.hover\:text-primary:hover {
+    /* Example: Hover text color for non-active tabs */
+    color: text-primary;
+}
 
 
 
