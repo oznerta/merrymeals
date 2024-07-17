@@ -10,23 +10,25 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::create('riders', function (Blueprint $table) {
-        $table->id();
-        $table->string('first_name');
-        $table->string('last_name');
-        $table->string('email')->unique();
-        $table->string('address');
-        $table->string('phone_number');
-        $table->string('password');
-        $table->rememberToken();
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('riders', function (Blueprint $table) {
+            $table->id();
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email')->unique();
+            $table->string('street_address');
+            $table->string('city');
+            $table->string('postal_code');
+            $table->string('state');
+            $table->string('phone_number');
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+    }
 
-public function down()
-{
-    Schema::dropIfExists('riders');
-}
-
+    public function down()
+    {
+        Schema::dropIfExists('riders');
+    }
 };

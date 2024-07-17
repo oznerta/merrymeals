@@ -19,37 +19,33 @@ class Member extends Authenticatable
         'first_name',
         'last_name',
         'email',
-        'address',
+        'street_address',
+        'city',
+        'postal_code',
+        'state',
         'phone_number',
         'password',
         'caregiver_name',
         'caregiver_phone',
     ];
 
-
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
-
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 }
