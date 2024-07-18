@@ -1,5 +1,15 @@
+<script>
+import RiderLayout from "../Layouts/RiderLayout.vue";
+
+export default {
+    components: {
+        RiderLayout,
+    },
+};
+</script>
+
 <template>
-    <div>
-        Riders Dashboard
-    </div>
+    <RiderLayout>
+        <div>Riders Dashboard</div>
+    </RiderLayout>
 </template>
