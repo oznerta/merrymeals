@@ -60,19 +60,19 @@ export default {
                 <div class="flex items-center flex-grow">
                     <ul class="flex gap-16">
                         <li class="hover:text-primary">
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
                         </li>
 
                         <li class="hover:text-primary">
-                            <a href="#">About</a>
+                            <a href="#about">About</a>
                         </li>
 
                         <li class="hover:text-primary">
-                            <a href="#">Services</a>
+                            <a href="#services">Services</a>
                         </li>
 
                         <li class="hover:text-primary">
-                            <a href="#">Contact</a>
+                            <a href="#contact">Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -134,19 +134,19 @@ export default {
             >
                 <ul class="text-center text-text">
                     <li class="py-4">
-                        <a href="#" class="text-xl">Home</a>
+                        <a href="/" class="text-xl">Home</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">About</a>
+                        <a href="#about" class="text-xl">About</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">Services</a>
+                        <a href="#services" class="text-xl">Services</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">Contact</a>
+                        <a href="#contact" class="text-xl">Contact</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">Register</a>
+                        <a href="/register" class="text-xl">Register</a>
                     </li>
                 </ul>
             </div>
@@ -160,6 +160,7 @@ export default {
         >
             <section
                 class="flex flex-col items-center hero md-custom:mt-20 md-custom:flex-row"
+                id="home"
             >
                 <!-- Right side: Full image -->
                 <div
@@ -216,7 +217,7 @@ export default {
                 </div>
             </section>
 
-            <section class="mt-32 about">
+            <section class="mt-32" id="about">
                 <h3 class="mb-5 text-primary text-h1">About Us</h3>
                 <p class="mb-5">
                     We are a charitable organization dedicated to ensuring that
@@ -299,7 +300,7 @@ export default {
                 </div>
             </section>
 
-            <section class="mt-32 Services">
+            <section class="mt-32" id="services">
                 <h1 class="mb-10 text-primary text-h1">Our Services</h1>
 
                 <div
