@@ -1,21 +1,21 @@
 <template>
-    <BaseLayout>
-        <template #default>
             <header class="text-base">
                 <nav
-                    class="items-center justify-between w-full px-8 py-4 mx-auto shadow md:hidden md-custom:flex bg-accent"
+                    class="flex items-center justify-between w-full px-8 py-4 mx-auto shadow  bg-accent"
                     style="
                         position: fixed;
                         top: 0;
                         left: 0;
                         right: 0;
-                        z-index: 99;
+                        z-index: 10;
                     "
                 >
-                    <div>
+                    
+
+                    <div class="flex flex-grow">
                         <a href="/member/dashboard">
                             <img
-                                class="mr-20 w-100"
+                                class="w-32 md:w-48"
                                 src="../../../assets/logo.png"
                                 alt="logo"
                             />
@@ -23,8 +23,20 @@
                     </div>
                     <div>
                         <DropdownMenu>
-                            <DropdownMenuTrigger> User </DropdownMenuTrigger>
-                            <DropdownMenuContent class="mt-10 mr-3">
+                            <DropdownMenuTrigger> 
+                                User
+                                <i class="uil uil-angle-down"></i>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent class=" z-50 w-52 px-4 bg-accent">
+                                <DropdownMenuItem>
+                                    <a
+                                        href="/members/dashboard"
+                                        class="hover:text-primary"
+                                    >
+                                        dashboard
+                                    </a>
+                                </DropdownMenuItem>
+
                                 <DropdownMenuItem>
                                     <a
                                         href="/members/profile"
@@ -34,6 +46,7 @@
                                     </a>
                                 </DropdownMenuItem>
 
+                                
                                 <DropdownMenuItem>
                                     <a
                                         href="/members/orders"
@@ -62,14 +75,9 @@
                     </div>
                 </nav>
             </header>
-
-            <slot></slot>
-        </template>
-    </BaseLayout>
 </template>
 
 <script>
-import BaseLayout from "./BaseLayout.vue";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -88,7 +96,6 @@ export default {
         DropdownMenuLabel,
         DropdownMenuSeparator,
         DropdownMenuTrigger,
-        BaseLayout,
     },
 };
 </script>

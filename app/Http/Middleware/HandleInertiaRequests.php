@@ -47,7 +47,7 @@ class HandleInertiaRequests extends Middleware
                         case 'rider':
                             return $user->only('id', 'first_name', 'last_name', 'email');
                         case 'kitchen':
-                            return $user->only('id', 'first_name', 'last_name', 'email');
+                            return $user->only('id', 'first_name', 'last_name', 'email', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state');
                         default:
                             return null;
                     }

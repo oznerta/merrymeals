@@ -1,27 +1,92 @@
 <template>
-    <BaseLayout>
-      <template #default>
-        <nav>
-          <!-- Kitchen-specific menu -->
-          <ul>
-            <li><a href="/kitchens/dashboard">Dashboard</a></li>
-            <li><a href="/kitchens/profile">Profile</a></li>
-            <li><a href="/kitchens/menus">Menus</a></li>
-          </ul>
-        </nav>
-        <slot></slot>
-      </template>
-    </BaseLayout>
-  </template>
-  
-  <script>
-  import BaseLayout from './BaseLayout.vue';
-  
-  export default {
-    name: 'KitchenLayout',
-    components: {
-      BaseLayout,
-    },
-  };
-  </script>
-  
+  <header class="text-base">
+    <nav class="flex items-center justify-between w-full px-8 py-4 mx-auto shadow  bg-accent" style="
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              z-index: 10;
+          ">
+
+
+      <div class="flex flex-grow">
+        <a href="/member/dashboard">
+          <img class="w-32 md:w-48" src="../../../assets/logo.png" alt="logo" />
+        </a>
+      </div>
+      <div>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            {{ $page.props.auth.user.first_name }}
+            <i class="uil uil-angle-down"></i>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent class=" z-50 w-52 px-4 py-2 bg-accent">
+            <DropdownMenuItem>
+              <a href="/members/profile" class="hover:text-primary">
+                Profile
+              </a>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem>
+              <a href="/members/orders" class="hover:text-primary">
+                Orders
+              </a>
+            </DropdownMenuItem>
+
+
+            <DropdownMenuItem>
+              <a href="/members/orders" class="hover:text-primary">
+                Menu
+              </a>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem>
+              <a href="/members/history" class="hover:text-primary">
+                History
+              </a>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem>
+              <a href="/members/help" class="hover:text-primary">
+                Help Center
+              </a>
+            </DropdownMenuItem>
+
+            <hr class="mt-3" />
+
+            <DropdownMenuItem >
+              <form method="POST" action="/logout">
+                <button type="submit" class="hover:text-primary">
+                  Logout
+                </button>
+              </form>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </nav>
+  </header>
+</template>
+
+<script>
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../shadcn/ui/dropdown-menu";
+
+export default {
+  name: "KitchenLayout",
+  components: {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  },
+};
+</script>
