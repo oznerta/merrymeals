@@ -37,7 +37,7 @@ const login = () => {
     <div
         class="flex flex-col bg-accent text-text py-8 px-4 md:px-8 mx-auto max-w-[1900px]"
     >
-        <div class="mb-10 w-12">
+        <div class="w-12 mb-10">
             <a href="/" class="flex items-center gap-2 hover:text-primary">
                 <i class="uil uil-backspace text-h2"> </i>
                 Back
@@ -48,24 +48,28 @@ const login = () => {
             class="flex-row p-24 items-center justify-center mx-auto max-w-[1500px]"
         >
             <div class="flex gap-2 justify-center max-w-[1500px]">
-                <p>[logo]</p>
-                <p class="text-primary text-h2 mb-10">Meals on Wheels</p>
+                <img
+                    class="w-32 h-auto md-custom:w-48"
+                    src="../../../assets/logo.png"
+                    alt="logo"
+                />
+                <p class="mb-10 text-primary text-h2">Meals on Wheels</p>
             </div>
             <div>
-                <p class="text-center font-medium my-2 text-h3">
+                <p class="my-2 font-medium text-center text-h3">
                     Log in to your account
                 </p>
                 <p
-                    class="text-center font-base mb-8 text-smaller text-gray-600"
+                    class="mb-8 text-center text-gray-600 font-base text-smaller"
                 >
                     Welcome back! We are so pleased to see you again :D
                 </p>
             </div>
             <div>
-                <form 
+                <form
                     @submit.prevent="login"
                     class="flex flex-col gap-6 max-w-[1500px]"
-                    >
+                >
                     <div class="flex flex-col gap-3 max-w-[1500px]">
                         <Input
                             type="email"
@@ -85,7 +89,7 @@ const login = () => {
                     </div>
 
                     <button
-                        class="bg-primary hover:bg-secondary text-white text-base py-2 px-4 rounded"
+                        class="px-4 py-2 text-base text-white rounded bg-primary hover:bg-secondary"
                         type="submit"
                     >
                         Login
@@ -93,9 +97,9 @@ const login = () => {
                 </form>
             </div>
             <div>
-                <p class="text-center mt-4 text-smaller text-gray-600">
+                <p class="mt-4 text-center text-gray-600 text-smaller">
                     Don't have an account?
-                    <a href="register" class="hover:text-primary underline"
+                    <a href="register" class="underline hover:text-primary"
                         >Register Now!</a
                     >
                 </p>
