@@ -7,6 +7,8 @@ import {
 } from "../shadcn/ui/accordion";
 
 import { Button } from "../shadcn/ui/button";
+import { Textarea } from "../shadcn/ui/textarea";
+import { Input } from "../shadcn/ui/input";
 
 export default {
     components: {
@@ -15,6 +17,8 @@ export default {
         AccordionContent,
         AccordionItem,
         AccordionTrigger,
+        Textarea,
+        Input,
     },
 
     data() {
@@ -56,19 +60,19 @@ export default {
                 <div class="flex items-center flex-grow">
                     <ul class="flex gap-16">
                         <li class="hover:text-primary">
-                            <a href="#">Home</a>
+                            <a href="/">Home</a>
                         </li>
 
                         <li class="hover:text-primary">
-                            <a href="#">About</a>
+                            <a href="#about">About</a>
                         </li>
 
                         <li class="hover:text-primary">
-                            <a href="#">Services</a>
+                            <a href="#services">Services</a>
                         </li>
 
                         <li class="hover:text-primary">
-                            <a href="#">Contact</a>
+                            <a href="#contact">Contact</a>
                         </li>
                     </ul>
                 </div>
@@ -130,19 +134,19 @@ export default {
             >
                 <ul class="text-center text-text">
                     <li class="py-4">
-                        <a href="#" class="text-xl">Home</a>
+                        <a href="/" class="text-xl">Home</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">About</a>
+                        <a href="#about" class="text-xl">About</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">Services</a>
+                        <a href="#services" class="text-xl">Services</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">Contact</a>
+                        <a href="#contact" class="text-xl">Contact</a>
                     </li>
                     <li class="py-4">
-                        <a href="#" class="text-xl">Register</a>
+                        <a href="/register" class="text-xl">Register</a>
                     </li>
                 </ul>
             </div>
@@ -156,6 +160,7 @@ export default {
         >
             <section
                 class="flex flex-col items-center hero md-custom:mt-20 md-custom:flex-row"
+                id="home"
             >
                 <!-- Right side: Full image -->
                 <div
@@ -212,7 +217,7 @@ export default {
                 </div>
             </section>
 
-            <section class="mt-32 about">
+            <section class="mt-32" id="about">
                 <h3 class="mb-5 text-primary text-h1">About Us</h3>
                 <p class="mb-5">
                     We are a charitable organization dedicated to ensuring that
@@ -288,14 +293,14 @@ export default {
 
                 <div class="flex text-center">
                     <a
-                        href="#"
+                        href="/register"
                         class="w-full py-2 rounded-lg bg-primary text-accent px-14 hover:bg-secondary"
                         >Get Your Meals</a
                     >
                 </div>
             </section>
 
-            <section class="mt-32 Services">
+            <section class="mt-32" id="services">
                 <h1 class="mb-10 text-primary text-h1">Our Services</h1>
 
                 <div
@@ -404,6 +409,138 @@ export default {
                     </div>
                 </div>
             </section>
+
+            <section id="contact" class="mb-10">
+                <div class="mx-auto">
+                    <div class="mb-10">
+                        <h2 class="text-primary text-h1">Contact Us</h2>
+
+                        <p class="text-base">
+                            Whether you have questions about our services, want
+                            to know how to get involved or simply wish to share
+                            your feedback, we're here to help. Reach out to us
+                            through any of the following methods.
+                        </p>
+                    </div>
+
+                    <div class="flex content-center justify-around">
+                        <div class="flex flex-col content-center">
+                            <div class="flex flex-row gap-10">
+                                <i
+                                    class="uil uil-phone-volume text-primary text-h1"
+                                ></i>
+                                <div class="flex flex-row gap-5">
+                                    <p class="font-bold">Phone</p>
+                                    <p class="">+1 (123) 456-7890</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-row gap-10">
+                                <i
+                                    class="uil uil-envelope text-primary text-h1"
+                                ></i>
+                                <div class="flex flex-row gap-5">
+                                    <p class="font-bold">Email</p>
+                                    <p class="">info@merrymeal.org</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-row gap-10 mb-5">
+                                <i
+                                    class="uil uil-location-point text-primary text-h1"
+                                ></i>
+                                <div class="flex flex-col">
+                                    <p class="font-bold">
+                                        MerryMeal Headquarters
+                                    </p>
+                                    <p class="">
+                                        123 Charity Lane, Food Town,<br />FT-45678
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-row gap-5">
+                                <div class="flex flex-col">
+                                    <div class="h-5 px-7 bg-primary"></div>
+                                    <div class="flex-row">
+                                        <i
+                                            class="uil uil-facebook text-primary text-h1"
+                                        ></i>
+                                        <i
+                                            class="uil uil-instagram-alt text-primary text-h1"
+                                        ></i>
+                                    </div>
+                                </div>
+
+                                <p class="font-bold">Connect with us</p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col justify-center w-2/5 gap-5">
+                            <h3 class="font-semi-bold text-primary">
+                                We'd Love to Hear From You!
+                            </h3>
+                            <form action="#" method="post">
+                                <Input
+                                    type="text"
+                                    placeholder="Name"
+                                    class="mb-5"
+                                />
+                                <Input
+                                    type="email"
+                                    placeholder="Email"
+                                    class="mb-5"
+                                />
+                                <Input
+                                    type="text"
+                                    placeholder="Subject"
+                                    class="mb-5"
+                                />
+                                <Textarea
+                                    type="textarea"
+                                    placeholder="Say something..."
+                                    class="mb-5"
+                                ></Textarea>
+                                <Button class="w-full text-secondary-accent"
+                                    >Send Message</Button
+                                >
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <hr />
+
+            <footer
+                class="flex content-center justify-around w-full mt-10 mb-5"
+            >
+                <div>
+                    <h2 class="mb-3 font-bold text-h2 text-secondary">
+                        Meals on Wheels
+                    </h2>
+                    <p>"Nourishing Lives, One Meal at a Time"</p>
+                </div>
+
+                <div class="w-2/5">
+                    <h2 class="mb-5 font-semi-bold text-h2 text-primary">
+                        Sign up to our Newsletter
+                    </h2>
+
+                    <form>
+                        <div class="flex flex-row gap-1">
+                            <Input type="email" placeholder="Email" />
+                            <Button class="px-24 text-secondary-accent"
+                                >Subscribe</Button
+                            >
+                        </div>
+                    </form>
+                </div>
+            </footer>
         </main>
+    </div>
+    <div class="flex flex-row justify-center w-full py-5 bg-primary">
+        <h2 class="text-secondary-accent">
+            &copy; 2024 MerryMeal. All rights reserved.
+        </h2>
     </div>
 </template>

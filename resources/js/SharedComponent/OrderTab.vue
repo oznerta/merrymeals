@@ -1,8 +1,12 @@
 <template>
+<<<<<<< HEAD
     <!-- <div
         class="flex w-full p-5 m-10 text-center rounded-md shadow cursor-pointer bg-slate-500"
+=======
+    <div
+        class="flex justify-between w-full p-5 m-10 text-center rounded-md shadow cursor-pointer bg-slate-500"
+>>>>>>> 60e6ae33b40ae4a7e6bce39ae31ecebd9298baea
     >
-    <h1>orders here</h1>
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div
                 v-for="order in orders"
@@ -16,9 +20,9 @@
                     <p class="text-gray-600">{{ order.status }}</p>
                 </div>
             </div>
-        </div>
-        <div class="flex rounded-sm justify-self-end bg-primary text-secondary-accent">
+            <div class="flex rounded-sm bg-primary text-secondary-accent">
                 <slot></slot>
+            </div>
         </div>
     </div> -->
     <div></div>
