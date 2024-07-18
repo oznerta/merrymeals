@@ -13,7 +13,7 @@ class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next)
     {
         if (Auth::guard('member')->check()) {
-            return redirect()->route('member.dashboard');
+            return redirect()->route('member.restaurant');
         }
 
         if (Auth::guard('rider')->check()) {

@@ -56,8 +56,12 @@ class HandleInertiaRequests extends Middleware
                 }
                 return null;
             },
-            'menus' => function () {
-                return Menu::all();
+            'menus' => function () use ($request) {
+                $user = $request->user();
+                if ($user && $user->role === 'kitchen') {
+                    return Menu::where('kitchen_id', $user->id)->get();
+                }
+                return [];
             },
             'nearbyKitchens' => function () use ($request) {
                 $user = $request->user();
@@ -70,7 +74,7 @@ class HandleInertiaRequests extends Middleware
 
                 $memberLatitude = $user->latitude ?? 0; // Default to 0 if latitude is not set
                 $memberLongitude = $user->longitude ?? 0; // Default to 0 if longitude is not set
-
+    
                 // Fetch kitchens within a 10km radius
                 $nearbyKitchens = Kitchen::select('id', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state')
                     ->selectRaw(
@@ -90,7 +94,27 @@ class HandleInertiaRequests extends Middleware
                     'nearby' => $nearbyKitchens,
                     'all' => $allKitchens,
                 ];
+
             },
+            'selectedKitchen' => function () use ($request) {
+                $restaurantName = $request->route('restaurant_name');
+
+                // Fetch the kitchen details by restaurant name
+                $kitchen = Kitchen::where('restaurant_name', $restaurantName)->first();
+
+                if (!$kitchen) {
+                    return null; // Handle case where kitchen is not found
+                }
+
+                // Fetch menus based on the selected kitchen's ID
+                $menus = Menu::where('kitchen_id', $kitchen->id)->get();
+
+                return [
+                    'kitchen' => $kitchen,
+                    'menus' => $menus,
+                ];
+            },
+
 
         ]);
     }

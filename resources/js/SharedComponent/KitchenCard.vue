@@ -11,17 +11,12 @@
       </CardHeader>
       <CardContent >
         <a :href="kitchenlink" class="view-menu cursor-pointer">
-          <div class="flex">
-            <div>
-              <span class="text-h2">📍</span>
-            </div>
             <div>
               <p class="mb-1 text-small text-gray-500"> Street: {{ kitchenStreet }}</p>
               <p class="mb-1 text-small text-gray-500">City: {{ kitchenCity }}</p>
               <p class="mb-1 text-small text-gray-500">State: {{ kitchenState }}</p>
               <p class="mb-1 text-small text-gray-500">Postal Code: {{ kitchenPostalCode }}</p>
             </div>
-          </div>
 
           <div class="grid grid-cols-2 w-full ml-3 items-center mt-5">
             <div class="flex gap-2 items-center">
@@ -72,12 +67,12 @@ export default {
       required: true,
     },
     distance: {
-      type: String,
+      type: [String, Number],
       required: true,
     },
     kitchenlink: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   methods: {
