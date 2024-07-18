@@ -155,7 +155,7 @@ export default {
         <!-- Main Body -->
 
         <main
-            class="flex flex-col px-4 py-8 mx-auto bg-accent text-text md:px-8"
+            class="flex flex-col px-4 pt-8 mx-auto bg-accent text-text md:px-8"
             style="max-width: 1800px"
         >
             <section
@@ -410,7 +410,7 @@ export default {
                 </div>
             </section>
 
-            <section id="contact" class="mb-10">
+            <section id="contact" class="mt-32 mb-32">
                 <div class="mx-auto">
                     <div class="mb-10">
                         <h2 class="text-primary text-h1">Contact Us</h2>
@@ -423,9 +423,9 @@ export default {
                         </p>
                     </div>
 
-                    <div class="flex content-center justify-around">
-                        <div class="flex flex-col content-center">
-                            <div class="flex flex-row gap-10">
+                    <div class="grid md-custom:grid-cols-2">
+                        <div class="flex flex-col justify-center mb-10">
+                            <div class="flex items-center flex-row gap-10">
                                 <i
                                     class="uil uil-phone-volume text-primary text-h1"
                                 ></i>
@@ -435,7 +435,7 @@ export default {
                                 </div>
                             </div>
 
-                            <div class="flex flex-row gap-10">
+                            <div class="flex items-center flex-row gap-10">
                                 <i
                                     class="uil uil-envelope text-primary text-h1"
                                 ></i>
@@ -445,7 +445,7 @@ export default {
                                 </div>
                             </div>
 
-                            <div class="flex flex-row gap-10 mb-5">
+                            <div class="flex items-center flex-row gap-10 mb-5">
                                 <i
                                     class="uil uil-location-point text-primary text-h1"
                                 ></i>
@@ -476,7 +476,9 @@ export default {
                             </div>
                         </div>
 
-                        <div class="flex flex-col justify-center w-2/5 gap-5">
+                        <div
+                            class="flex flex-col justify-center md-custom:p-5 gap-5 w-full"
+                        >
                             <h3 class="font-semi-bold text-primary">
                                 We'd Love to Hear From You!
                             </h3>
@@ -511,23 +513,29 @@ export default {
             </section>
             <hr />
 
-            <footer
-                class="flex content-center justify-around w-full mt-10 mb-5"
-            >
-                <div>
-                    <h2 class="mb-3 font-bold text-h2 text-secondary">
+            
+        </main>
+
+        <footer >
+                <div
+                    class="grid md-custom:grid-cols-2 text-center md-custom:text-left content-center justify-around w-full p-4 md-custom:px-16"
+                >
+                    <div class="flex flex-col justify-center">
+                    <h2 class="mb-3 font-bold text-h3 text-primary">
                         Meals on Wheels
                     </h2>
                     <p>"Nourishing Lives, One Meal at a Time"</p>
                 </div>
 
-                <div class="w-2/5">
-                    <h2 class="mb-5 font-semi-bold text-h2 text-primary">
+                <div class="w-full text-center md-custom:text-left mt-5">
+                    <h2 class="mb-1 text-base text-primary">
                         Sign up to our Newsletter
                     </h2>
 
                     <form>
-                        <div class="flex flex-row gap-1">
+                        <div
+                            class="w-full flex flex-col md-custom:flex-row gap-1"
+                        >
                             <Input type="email" placeholder="Email" />
                             <Button class="px-24 text-secondary-accent"
                                 >Subscribe</Button
@@ -535,12 +543,14 @@ export default {
                         </div>
                     </form>
                 </div>
+                </div>
+                <div
+                    class="flex flex-row justify-center w-full py-3 bg-secondary"
+                >
+                    <h2 class="text-accent text-smaller">
+                        &copy; 2024 MerryMeal. All rights reserved.
+                    </h2>
+                </div>
             </footer>
-        </main>
-    </div>
-    <div class="flex flex-row justify-center w-full py-5 bg-primary">
-        <h2 class="text-secondary-accent">
-            &copy; 2024 MerryMeal. All rights reserved.
-        </h2>
     </div>
 </template>
