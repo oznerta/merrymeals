@@ -1,13 +1,11 @@
 <script>
 import RiderLayout from "../Layouts/RiderLayout.vue";
 import KitchenCard from "../../SharedComponent/KitchenCard.vue";
-import OrderTab from "../../SharedComponent/OrderTab.vue";
 
 export default {
     components: {
         RiderLayout,
         KitchenCard,
-        OrderTab,
     },
     computed: {
         nearbyKitchens() {
@@ -30,10 +28,7 @@ export default {
         <main
             class="px-8 md-custom:px-24 mt-44 max-w-[1500px] mx-auto relative"
         >
-        <OrderTab>
-            <button>Accept</button>
-        </OrderTab>
-        
+
             <section class="restaurant">
                 <div>
                     <h1 class="mb-5">Nearby Restaurants</h1>
