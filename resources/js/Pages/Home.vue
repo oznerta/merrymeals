@@ -459,15 +459,19 @@ export default {
                                 </div>
                             </div>
 
-                            <div class="flex flex-row gap-10">
-                                <div>
-                                    <i
-                                        class="uil uil-facebook text-primary text-h1"
-                                    ></i>
-                                    <i
-                                        class="uil uil-instagram-alt text-primary text-h1"
-                                    ></i>
+                            <div class="flex flex-row gap-5">
+                                <div class="flex flex-col">
+                                    <div class="h-5 px-7 bg-primary"></div>
+                                    <div class="flex-row">
+                                        <i
+                                            class="uil uil-facebook text-primary text-h1"
+                                        ></i>
+                                        <i
+                                            class="uil uil-instagram-alt text-primary text-h1"
+                                        ></i>
+                                    </div>
                                 </div>
+
                                 <p class="font-bold">Connect with us</p>
                             </div>
                         </div>
@@ -511,7 +515,9 @@ export default {
                 class="flex content-center justify-around w-full mt-10 mb-5"
             >
                 <div>
-                    <h2 class="mb-3 font-bold text-h2 text-secondary">Meals on Wheels</h2>
+                    <h2 class="mb-3 font-bold text-h2 text-secondary">
+                        Meals on Wheels
+                    </h2>
                     <p>"Nourishing Lives, One Meal at a Time"</p>
                 </div>
 
