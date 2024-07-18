@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -53,6 +54,9 @@ class HandleInertiaRequests extends Middleware
                     }
                 }
                 return null;
+            },
+            'menus' => function () {
+                return Menu::all(); // Adjust query as needed
             },
         ]);
     }

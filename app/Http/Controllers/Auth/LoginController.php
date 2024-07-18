@@ -31,7 +31,7 @@ class LoginController extends Controller
         // Attempt to login using the kitchen guard
         if (Auth::guard('kitchen')->attempt(['email' => $fields['email'], 'password' => $fields['password']])) {
             $request->session()->regenerate();
-            return redirect()->route('kitchen.dashboard');
+            return redirect()->route('kitchen.menu');
         }
 
         return response()->json([

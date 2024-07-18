@@ -13,3 +13,7 @@
     @inertia
 </body>
 </html>
+
+<script>
+    window.APP_URL = "{{ config('app.url') }}";
+</script>

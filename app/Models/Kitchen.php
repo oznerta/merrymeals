@@ -10,6 +10,8 @@ class Kitchen extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'kitchens';
+
     /**
      * The attributes that are mass assignable.
      *

@@ -86,7 +86,7 @@ class RegisterController
         Auth::guard('kitchen')->login($kitchen);
 
         // Return a response
-        return redirect()->route('kitchen.dashboard');
+        return redirect()->route('kitchen.menu');
     }
 
 

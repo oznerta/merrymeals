@@ -10,6 +10,8 @@ class Rider extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'riders';
+
     /**
      * The attributes that are mass assignable.
      *
