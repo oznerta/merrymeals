@@ -428,13 +428,9 @@ export default {
                                 <i
                                     class="uil uil-phone-volume text-primary text-h1"
                                 ></i>
-                                <div class="flex flex-row gap-5 ">
-                                    <p class="font-bold">
-                                       Phone
-                                    </p>
-                                    <p class="">
-                                        +1 (123) 456-7890
-                                    </p>
+                                <div class="flex flex-row gap-5">
+                                    <p class="font-bold">Phone</p>
+                                    <p class="">+1 (123) 456-7890</p>
                                 </div>
                             </div>
 
@@ -442,13 +438,9 @@ export default {
                                 <i
                                     class="uil uil-envelope text-primary text-h1"
                                 ></i>
-                                <div class="flex flex-row gap-5 ">
-                                    <p class="font-bold">
-                                       Email
-                                    </p>
-                                    <p class="">
-                                        info@merrymeal.org
-                                    </p>
+                                <div class="flex flex-row gap-5">
+                                    <p class="font-bold">Email</p>
+                                    <p class="">info@merrymeal.org</p>
                                 </div>
                             </div>
 
@@ -515,18 +507,17 @@ export default {
             <hr />
 
             <footer
-                class="flex content-center justify-around w-full py-10 mb-5"
+                class="flex content-center justify-around w-full mt-10 mb-5"
             >
                 <div>
-                    <h2 class="font-bold text-h2">Meals on Wheels</h2>
+                    <h2 class="mb-3 font-bold text-h2 text-secondary">Meals on Wheels</h2>
                     <p>"Nourishing Lives, One Meal at a Time"</p>
                 </div>
 
                 <div class="w-2/5">
-                    <h2 class="font-semi-bold text-h2">
+                    <h2 class="mb-5 font-semi-bold text-h2 text-primary">
                         Sign up to our Newsletter
                     </h2>
-                    <p>"Nourishing Lives, One Meal at a Time"</p>
 
                     <form>
                         <div class="flex flex-row gap-1">
@@ -539,5 +530,10 @@ export default {
                 </div>
             </footer>
         </main>
+    </div>
+    <div class="flex flex-row justify-center w-full py-5 bg-primary">
+        <h2 class="text-secondary-accent">
+            &copy; 2024 MerryMeal. All rights reserved.
+        </h2>
     </div>
 </template>
