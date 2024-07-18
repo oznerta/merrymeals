@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Menu;
+use App\Models\Kitchen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate; // Import the Gate facade
 use Illuminate\Support\Facades\Storage;
@@ -86,4 +87,21 @@ class MenuController extends Controller
 
         return redirect()->route('kitchen.menu')->with('success', 'Menu deleted successfully.');
     }
+
+
+    public function show($kitchen_name)
+    {
+        // Fetch the kitchen based on the name
+        $kitchen = Kitchen::where('restaurant_name', $kitchen_name)->firstOrFail();
+        
+        // Optionally, fetch menus related to this kitchen
+        $menus = $kitchen->menus()->get(); // Assuming Kitchen has a relationship with Menu model
+    
+        // Return the view or Inertia response for the menu page
+        return inertia('Members/Menu', [
+            'selectedKitchen' => $kitchen, // Ensure this matches your prop name in Vue component
+            'menus' => $menus,
+        ]);
+    }
+    
 }

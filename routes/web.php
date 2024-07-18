@@ -31,6 +31,7 @@ Route::middleware(['auth:member', 'verified'])->group(function () {
 
     // Route to fetch nearby kitchens
     Route::get('/get-nearby-kitchens', [MemberController::class, 'getNearbyKitchens'])->name('get-nearby-kitchens');
+    Route::get('/member/menu/{kitchen_name}', [MenuController::class, 'show'])->name('member.menu');
 });
 
 // Rider routes

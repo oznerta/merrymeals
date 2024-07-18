@@ -51,4 +51,12 @@ class Kitchen extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Define a one-to-many relationship with the Menu model.
+     */
+    public function menus()
+    {
+        return $this->hasMany(Menu::class);
+    }
 }
