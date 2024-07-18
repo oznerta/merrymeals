@@ -19,7 +19,7 @@ class LoginController extends Controller
         // Attempt to login using the member guard
         if (Auth::guard('member')->attempt(['email' => $fields['email'], 'password' => $fields['password']])) {
             $request->session()->regenerate();
-            return redirect()->route('member.dashboard');
+            return redirect()->route('member.restaurant');
         }
 
         // Attempt to login using the rider guard

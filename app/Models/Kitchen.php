@@ -28,6 +28,8 @@ class Kitchen extends Authenticatable
         'state',
         'phone_number',
         'password',
+        'latitude', 
+        'longitude',
     ];
 
     /**

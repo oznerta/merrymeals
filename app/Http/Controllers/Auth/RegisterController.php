@@ -26,7 +26,13 @@ class RegisterController
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'caregiver_name' => ['nullable', 'string', 'max:255'],
             'caregiver_phone' => ['nullable', 'string', 'max:255'],
+            'latitude' => ['required', 'numeric'],
+            'longitude' => ['required', 'numeric'],
         ]);
+
+        // Capitalize the first letters of first_name and last_name
+        $fields['first_name'] = ucfirst(strtolower($fields['first_name']));
+        $fields['last_name'] = ucfirst(strtolower($fields['last_name']));
 
         // Register the member
         $member = Member::create($fields);
@@ -35,7 +41,7 @@ class RegisterController
         Auth::guard('member')->login($member);
 
         // Return a response
-        return redirect()->route('member.dashboard');
+        return redirect()->route('member.restaurant');
     }
 
     public function registerRider(Request $request)
@@ -51,7 +57,13 @@ class RegisterController
             'state' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'latitude' => ['required', 'numeric'],
+            'longitude' => ['required', 'numeric'],
         ]);
+
+        // Capitalize the first letters of first_name and last_name
+        $fields['first_name'] = ucfirst(strtolower($fields['first_name']));
+        $fields['last_name'] = ucfirst(strtolower($fields['last_name']));
 
         // Register the rider
         $rider = Rider::create($fields);
@@ -77,7 +89,13 @@ class RegisterController
             'state' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'latitude' => ['required', 'numeric'],
+            'longitude' => ['required', 'numeric'],
         ]);
+
+        // Capitalize the first letters of first_name and last_name
+        $fields['first_name'] = ucfirst(strtolower($fields['first_name']));
+        $fields['last_name'] = ucfirst(strtolower($fields['last_name']));
 
         // Register the kitchen
         $kitchen = Kitchen::create($fields);

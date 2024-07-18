@@ -35,12 +35,16 @@ const getLocation = async (form) => {
           const data = await response.json();
           console.log("Location data:", data);
 
-          // Extract address components
+          // Update form fields with location data
           const address = data.address;
           form.street_address = address.road || address.pedestrian || address.cycleway;
           form.city = address.city || address.town || address.village;
           form.state = address.state;
           form.postal_code = address.postcode;
+
+          // Store latitude and longitude
+          form.latitude = lat;
+          form.longitude = lon;
         } catch (error) {
           console.error("Error fetching location:", error);
         }
@@ -53,6 +57,7 @@ const getLocation = async (form) => {
     alert("Geolocation is not supported by this browser.");
   }
 };
+
 
 
 // member form request-------------------------------------------------------------------
@@ -69,6 +74,9 @@ const memberForm = useForm({
     password_confirmation: null,
     caregiver_name: null,
     caregiver_phone: null,
+    latitude: null,
+    longitude: null,
+
 });
 
 const getMemberLocation = () => {
@@ -94,6 +102,8 @@ const riderForm = useForm({
     phone_number: null,
     password: null,
     password_confirmation: null,
+    latitude: null,
+    longitude: null,
 });
 
 const getRiderLocation = () => {
@@ -122,6 +132,8 @@ const kitchenForm = useForm({
     phone_number: null,
     password: null,
     password_confirmation: null,
+    latitude: null,
+    longitude: null,
 });
 
 const getKitchenLocation = () => {

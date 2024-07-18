@@ -10,7 +10,7 @@
 
 
       <div class="flex flex-grow">
-        <a href="/member/dashboard">
+        <a href="/kitchen/dashboard">
           <img class="w-32 h-auto md-custom:w-48" src="../../../assets/logo.png" alt="logo" />
         </a>
       </div>
@@ -22,32 +22,32 @@
           </DropdownMenuTrigger>
           <DropdownMenuContent class="mr-2 z-50 w-52 px-4 py-2 bg-accent">
             <DropdownMenuItem>
-              <a href="/members/profile" class="hover:text-primary">
+              <a href="/kitchen/profile" class="hover:text-primary">
                 Profile
               </a>
             </DropdownMenuItem>
 
             <DropdownMenuItem>
-              <a href="/members/orders" class="hover:text-primary">
+              <a href="/kitchen/orders" class="hover:text-primary">
                 Orders
               </a>
             </DropdownMenuItem>
 
 
             <DropdownMenuItem>
-              <a href="/members/orders" class="hover:text-primary">
+              <a href="/kitchen/orders" class="hover:text-primary">
                 Menu
               </a>
             </DropdownMenuItem>
 
             <DropdownMenuItem>
-              <a href="/members/history" class="hover:text-primary">
+              <a href="/kitchen/history" class="hover:text-primary">
                 History
               </a>
             </DropdownMenuItem>
 
             <DropdownMenuItem>
-              <a href="/members/help" class="hover:text-primary">
+              <a href="/kitchen/help" class="hover:text-primary">
                 Help Center
               </a>
             </DropdownMenuItem>

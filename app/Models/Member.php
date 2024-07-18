@@ -29,6 +29,8 @@ class Member extends Authenticatable
         'password',
         'caregiver_name',
         'caregiver_phone',
+        'latitude', 
+        'longitude',
     ];
 
     /**

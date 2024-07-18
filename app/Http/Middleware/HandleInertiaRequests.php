@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Menu;
+use App\Models\Kitchen;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -44,11 +45,11 @@ class HandleInertiaRequests extends Middleware
                     $role = $user->role;
                     switch ($role) {
                         case 'member':
-                            return $user->only('id', 'first_name', 'last_name', 'email');
+                            return $user->only('id', 'first_name', 'last_name', 'email', 'latitude', 'longitude');
                         case 'rider':
-                            return $user->only('id', 'first_name', 'last_name', 'email');
+                            return $user->only('id', 'first_name', 'last_name', 'email', 'latitude', 'longitude');
                         case 'kitchen':
-                            return $user->only('id', 'first_name', 'last_name', 'email', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state');
+                            return $user->only('id', 'first_name', 'last_name', 'email', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state', 'latitude', 'longitude');
                         default:
                             return null;
                     }
@@ -56,8 +57,41 @@ class HandleInertiaRequests extends Middleware
                 return null;
             },
             'menus' => function () {
-                return Menu::all(); // Adjust query as needed
+                return Menu::all();
             },
+            'nearbyKitchens' => function () use ($request) {
+                $user = $request->user();
+                if (!$user) {
+                    return [
+                        'nearby' => [],
+                        'all' => []
+                    ];
+                }
+
+                $memberLatitude = $user->latitude ?? 0; // Default to 0 if latitude is not set
+                $memberLongitude = $user->longitude ?? 0; // Default to 0 if longitude is not set
+
+                // Fetch kitchens within a 10km radius
+                $nearbyKitchens = Kitchen::select('id', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state')
+                    ->selectRaw(
+                        '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) AS distance',
+                        [$memberLatitude, $memberLongitude, $memberLatitude]
+                    )
+                    ->having('distance', '<', 10) // Within 10 kilometers
+                    ->orderBy('distance')
+                    ->get();
+
+                // Fetch all kitchens (excluding nearby) for display
+                $allKitchens = Kitchen::select('id', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state')
+                    ->whereNotIn('id', $nearbyKitchens->pluck('id')->toArray())
+                    ->get();
+
+                return [
+                    'nearby' => $nearbyKitchens,
+                    'all' => $allKitchens,
+                ];
+            },
+
         ]);
     }
 }

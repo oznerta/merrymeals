@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MemberController;
 
 // ------------------------------------------Public Routes------------------------------------------>>>>>>>>>>>>
 Route::inertia('/', 'Home')->name('home');
@@ -25,8 +26,11 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 // -------------------------------------------Private Routes------------------------------------------>>>>>>>>>>>>
 // Member routes
 Route::middleware(['auth:member', 'verified'])->group(function () {
-    Route::inertia('/member/dashboard', 'Members/dashboard')->name('member.dashboard');
+    Route::inertia('/member/restaurant', 'Members/Restaurant')->name('member.restaurant');
     Route::inertia('/member/sample', 'Members/sample')->name('member.sample');
+
+    // Route to fetch nearby kitchens
+    Route::get('/get-nearby-kitchens', [MemberController::class, 'getNearbyKitchens'])->name('get-nearby-kitchens');
 });
 
 // Rider routes
