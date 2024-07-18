@@ -1,5 +1,5 @@
 <template>
-    <div
+    <!-- <div
         class="flex w-full p-5 m-10 text-center rounded-md shadow cursor-pointer bg-slate-500"
     >
     <h1>orders here</h1>
@@ -20,10 +20,11 @@
         <div class="flex rounded-sm justify-self-end bg-primary text-secondary-accent">
                 <slot></slot>
         </div>
-    </div>
+    </div> -->
+    <div></div>
 </template>
 
-<script>
+<!-- <script>
 export default {
     props: {
         orders: {
@@ -32,4 +33,4 @@ export default {
         },
     },
 };
-</script>
+</script> -->

@@ -34,47 +34,37 @@ const login = () => {
 </script>
 
 <template>
-    <div
-        class="flex flex-col bg-accent text-text py-8 px-4 md:px-8 mx-auto max-w-[1900px]"
-    >
+    <div class="flex flex-col bg-accent text-text min-h-screen py-8 px-4 md:px-8">
         <div class="w-12 mb-10">
             <a href="/" class="flex items-center gap-2 hover:text-primary">
-                <i class="uil uil-backspace text-h2"> </i>
+                <i class="uil uil-backspace text-h2"></i>
                 Back
             </a>
         </div>
 
-        <div
-            class="flex-row p-24 items-center justify-center mx-auto max-w-[1500px]"
-        >
-            <div class="flex gap-2 justify-center max-w-[1500px]">
+        <div class="flex flex-col items-center justify-center flex-1">
+            <div class="flex gap-2 justify-center items-center mb-5">
                 <img
-                    class="w-32 h-auto md-custom:w-48"
-                    src="../../../assets/logo.png"
+                    class="h-[50px]"
+                    src="../../../assets/logo-mobile.png"
                     alt="logo"
                 />
-                <p class="mb-10 text-primary text-h2">Meals on Wheels</p>
+                <p class=" text-primary font-bold text-[20px]">Meals on Wheels</p>
             </div>
-            <div>
-                <p class="my-2 font-medium text-center text-h3">
+            <div class="text-center">
+                <p class="my-2 font-medium text-h3">
                     Log in to your account
                 </p>
-                <p
-                    class="mb-8 text-center text-gray-600 font-base text-smaller"
-                >
-                    Welcome back! We are so pleased to see you again :D
+                <p class="mb-8 text-center text-gray-600 font-base text-smaller">
+                    Welcome back! We are so pleased to see you again <i class="uil uil-smile-beam text-[16px]"></i>
                 </p>
             </div>
-            <div>
-                <form
-                    @submit.prevent="login"
-                    class="flex flex-col gap-6 max-w-[1500px]"
-                >
-                    <div class="flex flex-col gap-3 max-w-[1500px]">
+            <div class="w-full max-w-md">
+                <form @submit.prevent="login" class="flex flex-col gap-6">
+                    <div class="flex flex-col gap-3">
                         <Input
                             type="email"
                             placeholder="Email"
-                            class="max-w-[1500px]"
                             v-model="form.email"
                         />
                         <small>{{ form.errors.email }}</small>
@@ -82,7 +72,6 @@ const login = () => {
                         <Input
                             type="password"
                             placeholder="Password"
-                            class="max-w-[1500px]"
                             v-model="form.password"
                         />
                         <small>{{ form.errors.password }}</small>
