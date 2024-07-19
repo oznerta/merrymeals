@@ -6,7 +6,7 @@
 
             <section class="restaurant">
                 <div>
-                    <h1>Nearby Restaurants</h1>
+                    <h1 class="text-primary mb-5">Nearby Restaurants</h1>
                     <div v-if="nearbyKitchens.length === 0">
                         <p>No nearby restaurants found.</p>
                     </div>
@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="mt-12">
-                        <h1>All Restaurants</h1>
+                        <h1 class="text-primary mb-5">All Restaurants</h1>
                         <div v-if="allKitchens.length === 0">
                             <p>No other restaurants found.</p>
                         </div>
@@ -62,9 +62,14 @@ export default {
         },
     },
     methods: {
-        navigateToMenu(kitchenlink) {
-            this.$inertia.visit(kitchenlink); // Navigate using Inertia.js
-        },
+    navigateToMenu(restaurantName) {
+      // Construct the URL using encodeURIComponent
+      const encodedName = encodeURIComponent(restaurantName);
+      const url = `/member/menu/${encodedName}`;
+
+      // Navigate using Inertia.js
+      this.$inertia.visit(url);
     },
+  },
 };
 </script>

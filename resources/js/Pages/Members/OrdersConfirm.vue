@@ -47,6 +47,12 @@ const submitOrder = () => {
         toast.value.show(errors.error); // Show toast notification on error
       }
       console.error('Order submission errors:', errors);
+    },
+    onSuccess: (response) => {
+      if (response.orderId) {
+        // Redirects to the waiting page
+        window.location.href = `/member/order/${response.orderId}`;
+      }
     }
   });
 };
@@ -57,7 +63,7 @@ const submitOrder = () => {
     <MemberLayout />
     <Toast ref="toast" /> <!-- Add the Toast component -->
     <main class="px-8 mt-20 md-custom:px-24 md-custom:mt-28 max-w-[1500px] mx-auto relative">
-      <section class="orders_page">
+      <section class="confirm_order">
         <div>
           <div class="w-1">
             <a :href="`/member/menu/${orderDetails.selectedKitchen.restaurant_name}`"

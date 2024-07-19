@@ -9,7 +9,8 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderNoteController;
-
+use Carbon\Carbon;
+use App\Models\Order;
 // ------------------------------------------Public Routes------------------------------------------>>>>>>>>>>>>
 Route::inertia('/', 'Home')->name('home');
 
@@ -30,8 +31,9 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::middleware(['auth:member', 'verified'])->group(function () {
     Route::inertia('/member/restaurant', 'Members/Restaurant')->name('member.restaurant');
     Route::inertia('/member/profile', 'Members/Profile')->name('member.profile');
-    Route::inertia('/member/order', 'Members/Order')->name('order.waiting');
+    
     Route::put('/member/profile', [MemberController::class, 'update'])->name('member.update');
+    Route::get('/member/order/{orderId}', [OrderController::class, 'showWaitingPage'])->name('order.waiting');
 
     // Route to fetch nearby kitchens
     Route::get('/get-nearby-kitchens', [MemberController::class, 'getNearbyKitchens'])->name('get-nearby-kitchens');
@@ -46,6 +48,18 @@ Route::middleware(['auth:member', 'verified'])->group(function () {
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 
 
+    Route::get('/api/current-order', function () {
+        $memberId = Auth::id();
+        $today = Carbon::today();
+    
+        $order = Order::where('member_id', $memberId)
+            ->whereDate('created_at', $today)
+            ->first();
+    
+        return response()->json([
+            'orderId' => $order ? $order->id : null,
+        ]);
+    });
     
 
 });
@@ -57,6 +71,7 @@ Route::middleware(['auth:rider', 'verified'])->group(function () {
 
 // Kitchen routes
 Route::middleware(['auth:kitchen', 'verified'])->group(function () {
+    Route::inertia('/kitchen/orders', 'Kitchens/Orders')->name('kitchen.orders');
     Route::inertia('/kitchen/menu', 'Kitchens/Menu')->name('kitchen.menu');
     Route::inertia('/kitchen/profile', 'Kitchens/Profile')->name('kitchen.profile');
     Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');

@@ -34,7 +34,7 @@
 
                         <DropdownMenuItem>
                             <a
-                                href="/member/order"
+                                :href="orderUrl"
                                 class="hover:text-primary"
                             >
                                 Order
@@ -104,6 +104,27 @@ export default {
         DropdownMenuSeparator,
         DropdownMenuTrigger,
     },
+    data() {
+    return {
+      orderId: null,
+    };
+  },
+  computed: {
+    orderUrl() {
+      // Return the URL based on whether there's an order ID
+      return this.orderId ? `/member/order/${this.orderId}` : '/member/order';
+    },
+  },
+  async mounted() {
+    // Fetch the current order ID from the server or state
+    try {
+      const response = await fetch('/api/current-order');
+      const data = await response.json();
+      this.orderId = data.orderId; // Set the order ID
+    } catch (error) {
+      console.error('Failed to fetch current order:', error);
+    }
+  },
 };
 </script>
 

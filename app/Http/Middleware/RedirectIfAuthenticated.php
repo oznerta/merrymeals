@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
         }
 
         if (Auth::guard('kitchen')->check()) {
-            return redirect()->route('kitchen.menu');
+            return redirect()->route('kitchen.orders');
         }
 
         return $next($request);

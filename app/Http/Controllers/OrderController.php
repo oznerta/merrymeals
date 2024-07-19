@@ -48,7 +48,7 @@ class OrderController extends Controller
             'notes' => $validated['notes'],
         ]);
 
-        return redirect()->route('order.waiting', ['order' => $order->id]);
+        return Inertia::location(route('order.waiting', ['orderId' => $order->id]));
     }
 
     private function calculateDistance($latitude1, $longitude1, $latitude2, $longitude2)
@@ -106,15 +106,61 @@ class OrderController extends Controller
     }
 
     public function showWaitingPage($orderId)
-    {
-        // Fetch the order details and other necessary data
-        $order = Order::with(['member', 'menu', 'kitchen'])->findOrFail($orderId);
+{
+    // Fetch the order details and other necessary data
+    $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
 
-        // Pass the order details to the view
+    if (!$order) {
+        // Handle case where order is not found
         return Inertia::render('Members/Order', [
-            'orderDetails' => $order,
+            'orderDetails' => null, // Ensure this is properly set
         ]);
     }
 
+    // Pass the order details to the view
+    return Inertia::render('Members/Order', [
+        'orderDetails' => $order,
+    ]);
+}
+
+public function index()
+{
+    $orders = Order::with('menu', 'member')->get();
+
+    return Inertia::render('Kitchens/Orders', [
+        'orders' => $orders
+    ]);
+}
+
+
+public function acceptOrder($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    $order->status = 'in preparation';
+    $order->save();
+
+    // Optionally: Notify the user or perform other actions
+}
+
+public function completeOrder($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    $order->status = 'completed';
+    $order->save();
+
+    // Optionally: Notify the user or perform other actions
+}
+
+public function cancelOrder($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    if ($order->status === 'pending') {
+        $order->status = 'cancelled';
+        $order->save();
+        return response()->json(['success' => true]);
+    } else {
+        return response()->json(['error' => 'Order cannot be cancelled at this stage.'], 403);
+    }
+}
 
 }

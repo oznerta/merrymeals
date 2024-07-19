@@ -140,27 +140,33 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'orderDetails' => function () use ($request) {
-                $orderId = $request->route('order');
-                if (!$orderId) {
-                    return null;
-                }
+            $orderId = $request->route('order');
+            if (!$orderId) {
+                return null;
+            }
 
-                $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
+            $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
 
-                if (!$order) {
-                    return null;
-                }
+            if (!$order) {
+                return null;
+            }
 
-                return [
-                    'order' => $order,
-                    'member' => $order->member,
-                    'menu' => $order->menu,
-                    'kitchen' => $order->kitchen,
-                    'call_upon_arrival' => $order->call_upon_arrival,
-                    'ring_the_doorbell' => $order->ring_the_doorbell,
-                    'notes' => $order->notes,
-                ];
-            },
+            return [
+                'order' => $order,
+                'member' => $order->member,
+                'menu' => $order->menu,
+                'kitchen' => $order->kitchen,
+                'call_upon_arrival' => $order->call_upon_arrival,
+                'ring_the_doorbell' => $order->ring_the_doorbell,
+                'notes' => $order->notes,
+            ];
+        },
+        'orders' => function () use ($request) {
+            if ($request->user() && $request->user()->role === 'kitchen') {
+                return Order::with('menu', 'member')->get();
+            }
+            return [];
+        }
 
 
         ]);
