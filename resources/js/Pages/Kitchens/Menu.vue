@@ -94,9 +94,9 @@ export default {
     <div class="flex flex-col min-h-screen bg-accent">
         <KitchenLayout />
 
-        <main class="px-8 md-custom:px-24 mt-44 max-w-[1500px] mx-auto relative">
+        <main class="px-8 md-custom:px-24 mt-44 max-w-[1500px] gap-4 mx-auto relative">
             <section class="menu">
-                <div class="flex gap-4 between">
+                <div class="flex gap-4 between w-full">
                     <h1 class="text-primary text-h3">Menu</h1>
                     <button v-if="menus.length > 0" @click="toggleForm" title="Add new menu"
                         class="bg-transparent border border-primary text-primary px-4 hover:bg-secondary rounded-lg hover:text-accent">
@@ -147,12 +147,12 @@ export default {
                         </button>
                     </div>
 
-                    <div v-else class="grid md-custom:grid-cols-2 gap-2">
+                    <div v-else class="grid md-custom:grid-cols-2 gap-4 ">
                         <div v-for="menu in menus" :key="menu.id"
-                            class="bg-transparent border rounded-lg shadow-md border-primary overflow-hidden mb-4 grid md-custom:grid-cols-2 gap-2 p-2 relative">
+                            class=" grid border rounded-lg  overflow-hidden mb-4 md-custom:grid-cols-2 gap-2 relative ">
                             <!-- Delete Icon -->
                             <button title="Delete menu" @click="deleteMenu(menu.id)"
-                                class="absolute bottom-2 left-4 text-accent bg-red-500 border  w-8 h-8 rounded-full">
+                                class="absolute bottom-1 right-1 text-accent bg-red-500 border  w-8 h-8 rounded-full">
                                 <i class="uil uil-trash"></i>
                             </button>
 
@@ -165,8 +165,10 @@ export default {
                                 </p>
                             </div>
 
-                            <img :src="getMenuImageUrl(menu.image)" :alt="menu.meal_name + ' Image'"
-                                class="h-[180px] p-4 rounded-[20px] w-full object-cover my-auto" />
+                            <div class="overflow-hidden my-auto p-3 rounded-lg">
+                                <img :src="getMenuImageUrl(menu.image)" :alt="menu.meal_name + ' Image'"
+                                class=" w-full md-custom:w-42 h-32 rounded-lg md-custom:h-40 object-cover" />
+                            </div>
                         </div>
                     </div>
                 </div>

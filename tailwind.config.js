@@ -23,7 +23,7 @@ module.exports = {
 
         //Default  Tailwind
         'xl': {'max': '1280px'},
-        'lg': {'max': '1024'},
+        'lg': {'max': '1300'},
         'md': {'max': '768px'},
       },
       colors: {

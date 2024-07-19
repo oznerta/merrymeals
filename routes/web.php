@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderNoteController;
 
 // ------------------------------------------Public Routes------------------------------------------>>>>>>>>>>>>
 Route::inertia('/', 'Home')->name('home');
@@ -27,11 +29,23 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 // Member routes
 Route::middleware(['auth:member', 'verified'])->group(function () {
     Route::inertia('/member/restaurant', 'Members/Restaurant')->name('member.restaurant');
-    Route::inertia('/member/sample', 'Members/sample')->name('member.sample');
+    Route::inertia('/member/order', 'Members/Order')->name('order.waiting');
 
     // Route to fetch nearby kitchens
     Route::get('/get-nearby-kitchens', [MemberController::class, 'getNearbyKitchens'])->name('get-nearby-kitchens');
+
+    // Menu routes
     Route::get('/member/menu/{kitchen_name}', [MenuController::class, 'show'])->name('member.menu');
+
+    Route::get('/member/{restaurant_name}/{menu_name}/order', [OrderController::class, 'showOrderConfirmation'])->name('order.confirmation');
+
+    Route::get('/order/confirmation', [OrderController::class, 'showOrderConfirmation'])->name('order.confirmation');
+
+    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+
+
+    
+
 });
 
 // Rider routes

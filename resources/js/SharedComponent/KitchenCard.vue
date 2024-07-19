@@ -9,14 +9,14 @@
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent >
+      <CardContent>
         <a :href="kitchenlink" class="view-menu cursor-pointer">
-            <div>
-              <p class="mb-1 text-small text-gray-500"> Street: {{ kitchenStreet }}</p>
-              <p class="mb-1 text-small text-gray-500">City: {{ kitchenCity }}</p>
-              <p class="mb-1 text-small text-gray-500">State: {{ kitchenState }}</p>
-              <p class="mb-1 text-small text-gray-500">Postal Code: {{ kitchenPostalCode }}</p>
-            </div>
+          <div>
+            <p class="mb-1 text-small text-gray-500"> Street: {{ kitchenStreet }}</p>
+            <p class="mb-1 text-small text-gray-500">City: {{ kitchenCity }}</p>
+            <p class="mb-1 text-small text-gray-500">State: {{ kitchenState }}</p>
+            <p class="mb-1 text-small text-gray-500">Postal Code: {{ kitchenPostalCode }}</p>
+          </div>
 
           <div class="grid grid-cols-2 w-full ml-3 items-center mt-5">
             <div class="flex gap-2 items-center">
@@ -24,7 +24,8 @@
               <p class="text-smaller text-gray-500">{{ distance }} km</p>
             </div>
 
-            <div class="flex items-center gap-2">
+            <!-- Conditional rendering of the view menu section -->
+            <div v-if="!isSelectedKitchen" class="flex items-center gap-2">
               <p class="text-smaller">view menu</p>
               <i class="uil uil-arrow-right text-primary arrow"></i>
             </div>
@@ -73,6 +74,10 @@ export default {
     kitchenlink: {
       type: String,
       required: false,
+    },
+    isSelectedKitchen: {
+      type: Boolean,
+      required: true,
     },
   },
   methods: {

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Menu;
 use App\Models\Kitchen;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -83,18 +84,29 @@ class HandleInertiaRequests extends Middleware
                     )
                     ->having('distance', '<', 10) // Within 10 kilometers
                     ->orderBy('distance')
-                    ->get();
+                    ->get()
+                    ->each(function ($kitchen) {
+                    $kitchen->distance = round($kitchen->distance);
+                });
 
-                // Fetch all kitchens (excluding nearby) for display
-                $allKitchens = Kitchen::select('id', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state')
+                // Fetch all kitchens (excluding nearby) and calculate distance
+                $allKitchens = Kitchen::select('id', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state', 'latitude', 'longitude')
                     ->whereNotIn('id', $nearbyKitchens->pluck('id')->toArray())
-                    ->get();
+                    ->get()
+                    ->each(function ($kitchen) use ($memberLatitude, $memberLongitude) {
+                    $kitchen->distance = round(
+                        6371 * acos(
+                            cos(deg2rad($memberLatitude)) * cos(deg2rad($kitchen->latitude)) *
+                            cos(deg2rad($kitchen->longitude) - deg2rad($memberLongitude)) +
+                            sin(deg2rad($memberLatitude)) * sin(deg2rad($kitchen->latitude))
+                        )
+                    );
+                });
 
                 return [
                     'nearby' => $nearbyKitchens,
                     'all' => $allKitchens,
                 ];
-
             },
             'selectedKitchen' => function () use ($request) {
                 $restaurantName = $request->route('restaurant_name');
@@ -109,9 +121,44 @@ class HandleInertiaRequests extends Middleware
                 // Fetch menus based on the selected kitchen's ID
                 $menus = Menu::where('kitchen_id', $kitchen->id)->get();
 
+                // Calculate distance for the selected kitchen
+                $user = $request->user();
+                if ($user) {
+                    $memberLatitude = $user->latitude ?? 0;
+                    $memberLongitude = $user->longitude ?? 0;
+                    $kitchen->distance = round(6371 * acos(
+                        cos(deg2rad($memberLatitude)) * cos(deg2rad($kitchen->latitude)) *
+                        cos(deg2rad($kitchen->longitude) - deg2rad($memberLongitude)) +
+                        sin(deg2rad($memberLatitude)) * sin(deg2rad($kitchen->latitude))
+                    )
+                    );
+                }
+
                 return [
                     'kitchen' => $kitchen,
                     'menus' => $menus,
+                ];
+            },
+            'orderDetails' => function () use ($request) {
+                $orderId = $request->route('order');
+                if (!$orderId) {
+                    return null;
+                }
+
+                $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
+
+                if (!$order) {
+                    return null;
+                }
+
+                return [
+                    'order' => $order,
+                    'member' => $order->member,
+                    'menu' => $order->menu,
+                    'kitchen' => $order->kitchen,
+                    'call_upon_arrival' => $order->call_upon_arrival,
+                    'ring_the_doorbell' => $order->ring_the_doorbell,
+                    'notes' => $order->notes,
                 ];
             },
 

@@ -25,7 +25,7 @@
                     >
                         <DropdownMenuItem>
                             <a
-                                href="/members/profile"
+                                href="/member/profile"
                                 class="hover:text-primary"
                             >
                                 Profile
@@ -34,16 +34,16 @@
 
                         <DropdownMenuItem>
                             <a
-                                href="/members/orders"
+                                href="/member/order"
                                 class="hover:text-primary"
                             >
-                                Orders
+                                Order
                             </a>
                         </DropdownMenuItem>
 
                         <DropdownMenuItem>
                             <a
-                                href="/members/orders"
+                                href="/member/restaurant"
                                 class="hover:text-primary"
                             >
                                 Restaurant
@@ -52,7 +52,7 @@
 
                         <DropdownMenuItem>
                             <a
-                                href="/members/history"
+                                href="/member/history"
                                 class="hover:text-primary"
                             >
                                 History
@@ -60,7 +60,7 @@
                         </DropdownMenuItem>
 
                         <DropdownMenuItem>
-                            <a href="/members/help" class="hover:text-primary">
+                            <a href="/member/help" class="hover:text-primary">
                                 Help Center
                             </a>
                         </DropdownMenuItem>
