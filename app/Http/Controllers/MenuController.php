@@ -93,15 +93,51 @@ class MenuController extends Controller
     {
         // Fetch the kitchen based on the name
         $kitchen = Kitchen::where('restaurant_name', $kitchen_name)->firstOrFail();
-        
+
         // Optionally, fetch menus related to this kitchen
         $menus = $kitchen->menus()->get(); // Assuming Kitchen has a relationship with Menu model
-    
+
         // Return the view or Inertia response for the menu page
         return inertia('Members/Menu', [
             'selectedKitchen' => $kitchen, // Ensure this matches your prop name in Vue component
             'menus' => $menus,
         ]);
     }
-    
+
+    public function updateKitchen(Request $request, Kitchen $kitchen)
+    {
+        // Authorize the update action using the 'update-member' gate
+        // if (Gate::denies('update-member')) {
+        //     abort(403, 'Unauthorized action.');
+        // }
+
+        $kitchen = auth()->user();
+
+
+        $fields = $request->validate([
+            'restaurant_name' => ['string','max:255'],
+            'first_name' => [ 'string', 'max:255'],
+            'last_name' => [ 'string', 'max:255'],
+            'email' => ['email', 'max:255', 'unique:kitchens'],
+            'street_address' => [ 'string', 'max:255'],
+            'city' => [ 'string', 'max:255'],
+            'postal_code' => [ 'string', 'max:255'],
+            'state' => [ 'string', 'max:255'],
+            'phone_number' => [ 'string', 'max:255'],
+            'password' => [ 'string', 'min:8', 'confirmed'],
+        ]);
+
+        //can be used for member profile picture
+        // if ($request->hasFile('image')) {
+        //     if ($member->image) {
+        //         Storage::disk('public')->delete($menu->image);
+        //     }
+        //     $fields['image'] = $request->file('image')->store('menus', 'public');
+        // }
+
+        $kitchen->update($fields);
+
+        return redirect()->route('kitchen.profile')->with('success', 'Kitchen profile updated successfully.');
+    }
+
 }

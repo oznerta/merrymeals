@@ -27,7 +27,9 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 // Member routes
 Route::middleware(['auth:member', 'verified'])->group(function () {
     Route::inertia('/member/restaurant', 'Members/Restaurant')->name('member.restaurant');
+    Route::inertia('/member/profile', 'Members/Profile')->name('member.profile');
     Route::inertia('/member/sample', 'Members/sample')->name('member.sample');
+    Route::put('/member/profile', [MemberController::class, 'update'])->name('member.update');
 
     // Route to fetch nearby kitchens
     Route::get('/get-nearby-kitchens', [MemberController::class, 'getNearbyKitchens'])->name('get-nearby-kitchens');
@@ -42,8 +44,10 @@ Route::middleware(['auth:rider', 'verified'])->group(function () {
 // Kitchen routes
 Route::middleware(['auth:kitchen', 'verified'])->group(function () {
     Route::inertia('/kitchen/menu', 'Kitchens/Menu')->name('kitchen.menu');
+    Route::inertia('/kitchen/profile', 'Kitchens/Profile')->name('kitchen.profile');
     Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
     Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
+    Route::put('/kitchen/profile', [MenuController::class, 'updateKitchen'])->name('kitchen.update');
 
 });
 
