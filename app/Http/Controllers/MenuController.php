@@ -93,23 +93,7 @@ class MenuController extends Controller
     {
         // Fetch the kitchen based on the name
         $kitchen = Kitchen::where('restaurant_name', $kitchen_name)->firstOrFail();
-
-        // Fetch the user
-        $user = $request->user();
-
-        if ($user) {
-            $memberLatitude = $user->latitude ?? 0;
-            $memberLongitude = $user->longitude ?? 0;
-
-            // Calculate the distance and round it to an integer
-            $kitchen->distance = round(6371 * acos(
-                cos(deg2rad($memberLatitude)) * cos(deg2rad($kitchen->latitude)) *
-                cos(deg2rad($kitchen->longitude) - deg2rad($memberLongitude)) +
-                sin(deg2rad($memberLatitude)) * sin(deg2rad($kitchen->latitude))
-            )
-            );
-        }
-
+        
         // Optionally, fetch menus related to this kitchen
         $menus = $kitchen->menus()->get(); // Assuming Kitchen has a relationship with Menu model
 
@@ -119,6 +103,5 @@ class MenuController extends Controller
             'menus' => $menus,
         ]);
     }
-
-
+    
 }

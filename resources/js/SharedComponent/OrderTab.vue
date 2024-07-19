@@ -1,11 +1,6 @@
 <template>
-<<<<<<< HEAD
     <!-- <div
         class="flex w-full p-5 m-10 text-center rounded-md shadow cursor-pointer bg-slate-500"
-=======
-    <div
-        class="flex justify-between w-full p-5 m-10 text-center rounded-md shadow cursor-pointer bg-slate-500"
->>>>>>> 60e6ae33b40ae4a7e6bce39ae31ecebd9298baea
     >
         <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div

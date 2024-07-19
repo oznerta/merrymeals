@@ -5,7 +5,7 @@
             style="position: fixed; top: 0; left: 0; right: 0; z-index: 10"
         >
             <div class="flex flex-grow">
-                <a href="/kitchen/dashboard">
+                <a href="/kitchen/menu">
                     <img
                         class="w-32 h-auto md-custom:w-48"
                         src="../../../assets/logo.png"
@@ -25,7 +25,7 @@
                     >
                         <DropdownMenuItem>
                             <a
-                                href="/kitchen/profile"
+                                href="profile"
                                 class="hover:text-primary"
                             >
                                 Profile
