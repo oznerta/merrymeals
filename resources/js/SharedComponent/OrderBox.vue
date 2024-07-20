@@ -389,7 +389,7 @@ export default {
                     </form>
 
                     <form
-                        v-if="status === 'ready for pickup'"
+                        v-if="status === 'ready for pickup' && $page.props.auth.user.role === 'rider'"
                         @submit.prevent="handleMarkAsPickingUp"
                         class="w-full"
                     >
@@ -402,7 +402,7 @@ export default {
                     </form>
 
                     <form
-                        v-if="status === 'picking up'"
+                        v-if="status === 'picking up'  && $page.props.auth.user.role === 'rider'"
                         @submit.prevent="handleMarkAsOnItsWay"
                         class="w-full"
                     >
@@ -414,18 +414,6 @@ export default {
                         </Button>
                     </form>
 
-                    <form
-                        v-if="status === 'on its way' && $page.props.auth.user.role === 'member'"
-                        @submit.prevent="handleMarkAsComplete"
-                        class="w-full"
-                    >
-                        <Button
-                            type="submit"
-                            class="w-full bg-primary text-accent hover:bg-secondary"
-                        >
-                            Delivered
-                        </Button>
-                    </form>
                 </DrawerClose>
             </DrawerFooter>
         </DrawerContent>

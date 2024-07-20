@@ -108,3 +108,19 @@
   };
   </script>
 
+<!-- logout script -->
+<script setup>
+import { useForm } from "@inertiajs/vue3";
+
+const form = useForm({
+});
+
+const logout = () => {
+    form.post("/logout", {
+        onSuccess: () => {
+            this.$inertia.post(route("/logout"));
+        },
+
+    });
+};
+</script>

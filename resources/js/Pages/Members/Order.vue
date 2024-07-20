@@ -7,7 +7,7 @@
           <div class="w-1">
             <a
               href="/member/restaurant"
-              class="flex items-center gap-2 hover:text-primary mb-5"
+              class="flex items-center gap-2 mb-5 hover:text-primary"
             >
               <i class="uil uil-backspace text-h2"></i>
               Back
@@ -16,7 +16,7 @@
 
           <!-- Order Status Section -->
           <div v-if="orderDetails">
-            <h2 class="text-lg font-semibold mb-4">Order Status</h2>
+            <h2 class="mb-4 text-lg font-semibold">Order Status</h2>
             <div class="tracking-container">
               <div class="tracking-step">
                 <div :class="['step-circle', getStepClass(0)]"></div>
@@ -58,14 +58,14 @@
 
             <div>
               <div>
-            <button>Mark as Completed</button>
+            <button>Meal Received</button>
               </div>
             </div>
           </div>
 
-          
+
           <div v-else>
-            <p class="text-center mt-4 text-lg">You don't have any orders.</p>
+            <p class="mt-4 text-lg text-center">You don't have any orders.</p>
           </div>
         </div>
       </section>
