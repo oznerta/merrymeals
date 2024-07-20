@@ -80,6 +80,51 @@ export default {
       });
     };
 
+    const handleMarkAsCooked = () => {
+      form.post(`/orders/${props.orderId}/cooked`, {
+        onSuccess: (response) => {
+          if (response && response.props.success) {
+            props.onOrderCooked(props.orderId);
+          } else {
+            console.error(response.props.message || 'Unknown error');
+          }
+        },
+        onError: (errors) => {
+          console.error('Error marking as cooked');
+        }
+      });
+    };
+
+    const handleMarkAsOnItsWay = () => {
+      form.post(`/orders/${props.orderId}/on-its-way`, {
+        onSuccess: (response) => {
+          if (response && response.props.success) {
+            props.onOrderOnItsWay(props.orderId);
+          } else {
+            console.error(response.props.message || 'Unknown error');
+          }
+        },
+        onError: (errors) => {
+          console.error('Error marking as on its way');
+        }
+      });
+    };
+
+    const handleMarkAsComplete = () => {
+      form.post(`/orders/${props.orderId}/complete`, {
+        onSuccess: (response) => {
+          if (response && response.props.success) {
+            props.onOrderComplete(props.orderId);
+          } else {
+            console.error(response.props.message || 'Unknown error');
+          }
+        },
+        onError: (errors) => {
+          console.error('Error marking as complete');
+        }
+      });
+    };
+
     const getButtonText = () => {
       switch (props.status) {
         case 'pending':
@@ -101,6 +146,9 @@ export default {
       isOpen,
       handleAcceptOrder,
       handleCancelOrder,
+      handleMarkAsCooked,
+      handleMarkAsOnItsWay,
+      handleMarkAsComplete,
       getButtonText,
     };
   }
@@ -203,12 +251,31 @@ export default {
                       Accept Order
                     </Button>
                   </form>
+
                   <form v-if="status === 'pending'" @submit.prevent="handleCancelOrder" class="w-full">
                     <Button type="submit" class="bg-accent border border-primary text-primary hover:bg-secondary hover:text-accent hover:border-none w-full">
                       Reject Order
                     </Button>
                   </form>
-                  <!-- Other Buttons For Different Statuses -->
+
+                  <form v-if="status === 'in preparation'" @submit.prevent="handleMarkAsCooked" class="w-full">
+                    <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+                      Ready for Pickup
+                    </Button>
+                  </form>
+
+                  <form v-if="status === 'ready for pickup'" @submit.prevent="handleMarkAsOnItsWay" class="w-full">
+                    <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+                      Order On Its Way
+                    </Button>
+                  </form>
+
+                  <form v-if="status === 'on its way'" @submit.prevent="handleMarkAsComplete" class="w-full">
+                    <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+                      Mark as Completed
+                    </Button>
+                  </form>
+
                 </DrawerClose>
             </DrawerFooter>
         </DrawerContent>
