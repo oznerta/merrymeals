@@ -191,7 +191,7 @@ public function markAsComplete($orderId)
     $order->status = 'completed';
     $order->save();
 
-    return back()->with('success', 'Order marked as complete.');
+    return Redirect::route('member.restaurant');
 }
 
 
