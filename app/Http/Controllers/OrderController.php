@@ -116,7 +116,7 @@ class OrderController extends Controller
     $inPreparationOrders = Order::with('menu', 'member')->where('status', 'In Preparation')->get();
     $readyForPickupOrders = Order::with('menu', 'member')->where('status', 'ready for pickup')->get();
     $pickingUpOrders = Order::with('menu', 'member')->where('status', 'picking up')->get();
-    $onItsWayOrders = Order::with('menu', 'member')->where('status', 'on its way')->get();
+    $onItsWayOrder = Order::with('menu', 'member')->where('status', 'on its way')->get();
     $completedOrders = Order::with('menu', 'member')->where('status', 'completed')->get();
 
     return Inertia::render('Kitchens/Orders', [
@@ -124,7 +124,7 @@ class OrderController extends Controller
         'inPreparationOrders' => $inPreparationOrders,
         'readyForPickupOrders' => $readyForPickupOrders,
         'pickingUpOrders' => $pickingUpOrders,
-        'onItsWayOrders' => $onItsWayOrders,
+        'onItsWayOrder' => $onItsWayOrder,
         'completedOrders' => $completedOrders
     ]);
 }

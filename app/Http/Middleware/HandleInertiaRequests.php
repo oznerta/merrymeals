@@ -75,7 +75,7 @@ class HandleInertiaRequests extends Middleware
 
                 $memberLatitude = $user->latitude ?? 0; // Default to 0 if latitude is not set
                 $memberLongitude = $user->longitude ?? 0; // Default to 0 if longitude is not set
-    
+
                 // Fetch kitchens within a 10km radius
                 $nearbyKitchens = Kitchen::select('id', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state')
                     ->selectRaw(
@@ -176,6 +176,16 @@ class HandleInertiaRequests extends Middleware
             'readyForPickupOrders' => function () use ($request) {
                 if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
                     return Order::with('menu', 'member')->where('status', 'ready for pickup')->get();
+                }
+            },
+            'pickingUpOrders' => function () use ($request) {
+                if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
+                    return Order::with('menu', 'member')->where('status', 'picking up')->get();
+                }
+            },
+            'onItsWayOrder' => function () use ($request) {
+                if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
+                    return Order::with('menu', 'member')->where('status', 'on its way')->get();
                 }
             },
             'completedOrders' => function () use ($request) {

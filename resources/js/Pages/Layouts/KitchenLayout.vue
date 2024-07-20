@@ -83,7 +83,7 @@
       </main>
     </div>
   </template>
-  
+
   <script>
   import {
     DropdownMenu,
@@ -94,7 +94,7 @@
     DropdownMenuTrigger,
   } from "../../shadcn/ui/dropdown-menu";
 
-  
+
   export default {
     name: "KitchenLayout",
     components: {
@@ -107,4 +107,20 @@
     },
   };
   </script>
-  
+
+<!-- logout script -->
+<script setup>
+import { useForm } from "@inertiajs/vue3";
+
+const form = useForm({
+});
+
+const logout = () => {
+    form.post("/logout", {
+        onSuccess: () => {
+            this.$inertia.post(route("/logout"));
+        },
+
+    });
+};
+</script>

@@ -157,12 +157,13 @@ export default {
             orders,
             inPreparationOrders,
             readyForPickupOrders,
-            onOrderPickingUp,
+            pickingUpOrders,
             onItsWayOrder,
             completedOrders,
             onAcceptOrder,
             onCancelOrder,
             onOrderCooked,
+            onOrderPickingUp,
             onOrderOnItsWay,
             onOrderComplete,
         };
@@ -179,7 +180,8 @@ export default {
                     <TabsList class="grid w-full grid-cols-4 gap-4">
                         <TabsTrigger value="Order-list">Order List</TabsTrigger>
                         <TabsTrigger value="Rf-pickup">Ready for Pick-up</TabsTrigger>
-                        <TabsTrigger value="delivering">Delivering</TabsTrigger>
+                        <TabsTrigger value="to-deliver">To Deliver</TabsTrigger>
+                        <TabsTrigger value="delivering">Accepted Delivery</TabsTrigger>
                         <TabsTrigger value="C-orders">Completed Orders</TabsTrigger>
                     </TabsList>
 
@@ -222,10 +224,29 @@ export default {
                         </ScrollArea>
                     </TabsContent>
 
+                    <TabsContent value="to-deliver" class="mt-10 border-t-2">
+                        <ScrollArea class="h-[700px] p-4 rounded-lg">
+                            <div class="flex flex-col gap-2 mt-2">
+                                <OrderBox v-for="order in pickingUpOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                    :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
+                                        firstName: order.member.first_name,
+                                        lastName: order.member.last_name,
+                                        phoneNumber: order.member.phone_number,
+                                        streetAddress: order.member.street_address,
+                                        city: order.member.city,
+                                        state: order.member.state,
+                                        country: order.member.country,
+                                    }" :orderId="order.id" :status="order.status" :onAcceptOrder="onAcceptOrder" :onCancelOrder="onCancelOrder"
+                                    :onOrderOnItsWay="onOrderOnItsWay" :onPickingUpOrder="onOrderPickingUp"
+                                    :onOrderComplete="onOrderComplete" />
+                            </div>
+                        </ScrollArea>
+                    </TabsContent>
+
                     <TabsContent value="delivering" class="mt-10 border-t-2">
                         <ScrollArea class="h-[700px] p-4 rounded-lg">
                             <div class="flex flex-col gap-2 mt-2">
-                                <OrderBox v-for="order in readyForPickupOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                <OrderBox v-for="order in onItsWayOrder" :key="order.id" :menuName="order.menu.meal_name"
                                     :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
                                         firstName: order.member.first_name,
                                         lastName: order.member.last_name,
