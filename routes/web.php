@@ -47,6 +47,7 @@ Route::middleware(['auth:member', 'verified'])->group(function () {
     Route::get('/order/confirmation', [OrderController::class, 'showOrderConfirmation'])->name('order.confirmation');
 
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
+    Route::post('/orders/{order}/complete', [OrderController::class, 'markAsComplete'])->name('orders.complete');
 
 
     Route::get('/api/current-order', function () {
@@ -94,7 +95,6 @@ Route::middleware(['auth:kitchen', 'verified'])->group(function () {
     // Add these routes for specific status updates
     Route::post('/orders/{order}/cooked', [OrderController::class, 'markAsCooked'])->name('orders.cooked');
     Route::post('/orders/{order}/on-its-way', [OrderController::class, 'markAsOnItsWay'])->name('orders.onItsWay');
-    Route::post('/orders/{order}/complete', [OrderController::class, 'markAsComplete'])->name('orders.complete');
 
 });
 

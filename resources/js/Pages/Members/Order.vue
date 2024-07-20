@@ -57,9 +57,17 @@
             <p class="mt-2">Current Status: {{ orderDetails.status }}</p>
 
             <div>
-              <div>
-            <button>Meal Received</button>
-              </div>
+                <form
+                        @submit.prevent="handleMarkAsComplete"
+                        class="w-full"
+                    >
+                        <Button
+                            type="submit"
+                            class="w-full bg-primary text-accent hover:bg-secondary"
+                        >
+                           Meal Received
+                        </Button>
+                    </form>
             </div>
           </div>
 
@@ -75,16 +83,20 @@
 
 <script>
 import MemberLayout from "../Layouts/MemberLayout.vue";
+import {useForm} from "@inertiajs/vue3";
+import {Button} from "../../shadcn/ui/button";
 
 export default {
   components: {
     MemberLayout,
+    Button,
   },
   props: {
     orderDetails: {
       type: Object,
       default: () => ({}),
     },
+    orderId: Number,
   },
   methods: {
     getStepClass(stepIndex) {
@@ -99,6 +111,32 @@ export default {
       return stepIndex <= currentStatusIndex ? 'completed' : 'pending';
     },
   },
+  setup(props){
+    const form = useForm({
+            orderId: props.orderId,
+        });
+
+        const handleMarkAsComplete = () => {
+            form.post(`/orders/${props.orderDetails.id}/complete`, {
+                onSuccess: (response) => {
+                    if (response && response.props.success) {
+                        props.onOrderComplete(props.orderId);
+                    } else {
+                        console.error(
+                            response.props.message || "Unknown error"
+                        );
+                    }
+                },
+                onError: (errors) => {
+                    console.error("Error marking as complete");
+                },
+            });
+        };
+
+    return{
+        handleMarkAsComplete
+    };
+  }
 };
 </script>
 
