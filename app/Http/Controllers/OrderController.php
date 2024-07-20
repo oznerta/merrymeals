@@ -132,6 +132,14 @@ public function index()
     ]);
 }
 
+public function indexRider()
+{
+    $orders = Order::with('menu', 'member')->get();
+
+    return Inertia::render('Riders/Orders', [
+        'orders' => $orders
+    ]);
+}
 
 public function acceptOrder($orderId)
 {

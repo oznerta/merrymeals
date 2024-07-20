@@ -43,7 +43,7 @@
 
                         <DropdownMenuItem>
                             <a
-                                href="/rider/orders"
+                                href="/rider/restaurants"
                                 class="hover:text-primary"
                             >
                                 Restaurant

@@ -9,6 +9,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderNoteController;
+use App\Http\Controllers\RiderController;
 use Carbon\Carbon;
 use App\Models\Order;
 // ------------------------------------------Public Routes------------------------------------------>>>>>>>>>>>>
@@ -31,7 +32,7 @@ Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::middleware(['auth:member', 'verified'])->group(function () {
     Route::inertia('/member/restaurant', 'Members/Restaurant')->name('member.restaurant');
     Route::inertia('/member/profile', 'Members/Profile')->name('member.profile');
-    
+
     Route::put('/member/profile', [MemberController::class, 'update'])->name('member.update');
     Route::get('/member/order/{orderId}', [OrderController::class, 'showWaitingPage'])->name('order.waiting');
 
@@ -51,22 +52,26 @@ Route::middleware(['auth:member', 'verified'])->group(function () {
     Route::get('/api/current-order', function () {
         $memberId = Auth::id();
         $today = Carbon::today();
-    
+
         $order = Order::where('member_id', $memberId)
             ->whereDate('created_at', $today)
             ->first();
-    
+
         return response()->json([
             'orderId' => $order ? $order->id : null,
         ]);
     });
-    
+
 
 });
 
 // Rider routes
 Route::middleware(['auth:rider', 'verified'])->group(function () {
     Route::inertia('/rider/dashboard', 'Riders/dashboard')->name('rider.dashboard');
+    Route::inertia('/rider/profile', 'Riders/Profile')->name('rider.profile');
+    Route::inertia('/rider/orders','Riders/Orders')->name('rider.orders');
+
+    Route::put('/rider/profile', [RiderController::class, 'updateRider'])->name('rider.update');
 });
 
 // Kitchen routes
@@ -77,6 +82,9 @@ Route::middleware(['auth:kitchen', 'verified'])->group(function () {
     Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
     Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
     Route::put('/kitchen/profile', [MenuController::class, 'updateKitchen'])->name('kitchen.update');
+
+    Route::post('/api/orders/{orderId}/accept', [OrderController::class,'acceptOrder'])->name('order.accept');
+    Route::post('/api/orders/{orderId}/cancel', [OrderController::class,'cancelOrder'])->name('order.cancel');
 
 });
 

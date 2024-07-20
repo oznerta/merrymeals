@@ -43,7 +43,7 @@
 
                         <DropdownMenuItem>
                             <a
-                                href="/kitchen/orders"
+                                href="/kitchen/menu"
                                 class="hover:text-primary"
                             >
                                 Menu
