@@ -9,9 +9,8 @@ use App\Models\Menu;
 use App\Models\Kitchen;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -112,80 +111,75 @@ class OrderController extends Controller
     }
 
     public function index()
-    {
-        $orders = Order::with('menu', 'member')->get();
-
-        return Inertia::render('Kitchens/Orders', [
-            'orders' => $orders
-        ]);
-    }
-public function indexRider()
 {
-    $orders = Order::with('menu', 'member')->get();
+    $orders = Order::with('menu', 'member')->where('status', 'pending')->get();
+    $inPreparationOrders = Order::with('menu', 'member')->where('status', 'In Preparation')->get();
+    $readyForPickupOrders = Order::with('menu', 'member')->where('status', 'ready for pickup')->get();
+    $completedOrders = Order::with('menu', 'member')->where('status', 'completed')->get();
 
-    return Inertia::render('Riders/Orders', [
-        'orders' => $orders
+    return Inertia::render('Kitchens/Orders', [
+        'orders' => $orders,
+        'inPreparationOrders' => $inPreparationOrders,
+        'readyForPickupOrders' => $readyForPickupOrders,
+        'completedOrders' => $completedOrders
     ]);
 }
 
-    public function acceptOrder($orderId)
-    {
-        $order = Order::find($orderId);
-    
-        if (!$order) {
-            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
-        }
-    
-        $order->status = 'In Preparation';
-        $order->save();
-    
-        return response()->json(['success' => true, 'message' => 'Order is now in preparation']);
+public function acceptOrder($orderId)
+{
+    $order = Order::find($orderId);
+
+    if (!$order) {
+        return Redirect::back()->with('error', 'Order not found');
     }
 
-    public function cancelOrder($orderId)
-    {
-        $order = Order::find($orderId);
-    
-        if (!$order) {
-            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
-        }
-    
-        $order->delete(); // Remove the order completely
-    
-        return response()->json(['success' => true, 'message' => 'Order has been canceled']);
-    }
-    
-    
-    
+    $order->status = 'In Preparation';
+    $order->save();
 
-    public function completeOrder($orderId)
-    {
-        $order = Order::findOrFail($orderId);
-        $order->status = 'completed';
-        $order->save();
+    return Redirect::back()->with('success', 'Order is now in preparation');
+}
 
-        return response()->json(['success' => true]);
+public function cancelOrder($orderId)
+{
+    $order = Order::find($orderId);
+
+    if (!$order) {
+        return Redirect::back()->with('error', 'Order not found');
     }
 
+    $order->delete(); // Remove the order completely
 
-    public function updateOrderStatus(Request $request, $orderId)
-    {
-        $order = Order::find($orderId);
-        
-        if (!$order) {
-            return redirect()->back()->with('error', 'Order not found');
-        }
+    return Redirect::back()->with('success', 'Order has been canceled');
+}
 
-        $status = $request->input('status');
-        $validStatuses = ['pending', 'in preparation', 'ready for pickup', 'on its way', 'completed', 'cancelled'];
+public function markAsCooked($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    $order->status = 'ready for pickup';
+    $order->save();
 
-        if (!in_array($status, $validStatuses)) {
-            return redirect()->back()->with('error', 'Invalid status');
-        }
+    return back()->with('success', 'Order marked as cooked.');
+}
 
-        $order->status = $status;
-        $order->save();
+public function markAsOnItsWay($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    $order->status = 'on its way';
+    $order->save();
 
-        return redirect()->back()->with('success', 'Order status updated successfully');
-    }
+    return back()->with('success', 'Order marked as on its way.');
+}
+
+public function markAsComplete($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    $order->status = 'completed';
+    $order->save();
+
+    return back()->with('success', 'Order marked as complete.');
+}
+
+    
+
+
 }

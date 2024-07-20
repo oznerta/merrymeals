@@ -89,7 +89,10 @@ Route::middleware(['auth:kitchen', 'verified'])->group(function () {
     Route::post('/orders/{order}/accept', [OrderController::class, 'acceptOrder'])->name('orders.accept');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
     
-    Route::post('/orders/{orderId}/update-status', [OrderController::class, 'updateOrderStatus'])->name('orders.updateStatus');
+    // Add these routes for specific status updates
+    Route::post('/orders/{order}/cooked', [OrderController::class, 'markAsCooked'])->name('orders.cooked');
+    Route::post('/orders/{order}/on-its-way', [OrderController::class, 'markAsOnItsWay'])->name('orders.onItsWay');
+    Route::post('/orders/{order}/complete', [OrderController::class, 'markAsComplete'])->name('orders.complete');
 
 });
 

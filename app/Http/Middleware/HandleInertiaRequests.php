@@ -75,7 +75,7 @@ class HandleInertiaRequests extends Middleware
 
                 $memberLatitude = $user->latitude ?? 0; // Default to 0 if latitude is not set
                 $memberLongitude = $user->longitude ?? 0; // Default to 0 if longitude is not set
-
+    
                 // Fetch kitchens within a 10km radius
                 $nearbyKitchens = Kitchen::select('id', 'restaurant_name', 'street_address', 'city', 'postal_code', 'state')
                     ->selectRaw(
@@ -126,11 +126,12 @@ class HandleInertiaRequests extends Middleware
                 if ($user) {
                     $memberLatitude = $user->latitude ?? 0;
                     $memberLongitude = $user->longitude ?? 0;
-                    $kitchen->distance = round(6371 * acos(
-                        cos(deg2rad($memberLatitude)) * cos(deg2rad($kitchen->latitude)) *
-                        cos(deg2rad($kitchen->longitude) - deg2rad($memberLongitude)) +
-                        sin(deg2rad($memberLatitude)) * sin(deg2rad($kitchen->latitude))
-                    )
+                    $kitchen->distance = round(
+                        6371 * acos(
+                            cos(deg2rad($memberLatitude)) * cos(deg2rad($kitchen->latitude)) *
+                            cos(deg2rad($kitchen->longitude) - deg2rad($memberLongitude)) +
+                            sin(deg2rad($memberLatitude)) * sin(deg2rad($kitchen->latitude))
+                        )
                     );
                 }
 
@@ -140,34 +141,49 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'orderDetails' => function () use ($request) {
-            $orderId = $request->route('order');
-            if (!$orderId) {
-                return null;
-            }
+                $orderId = $request->route('order');
+                if (!$orderId) {
+                    return null;
+                }
 
-            $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
+                $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
 
-            if (!$order) {
-                return null;
-            }
+                if (!$order) {
+                    return null;
+                }
 
-            return [
-                'order' => $order,
-                'status'=>$order->status,
-                'member' => $order->member,
-                'menu' => $order->menu,
-                'kitchen' => $order->kitchen,
-                'call_upon_arrival' => $order->call_upon_arrival,
-                'ring_the_doorbell' => $order->ring_the_doorbell,
-                'notes' => $order->notes,
-            ];
-        },
-        'orders' => function () use ($request) {
-            if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
-                return Order::with('menu', 'member')->get();
-            }
+                return [
+                    'order' => $order,
+                    'status' => $order->status,
+                    'member' => $order->member,
+                    'menu' => $order->menu,
+                    'kitchen' => $order->kitchen,
+                    'call_upon_arrival' => $order->call_upon_arrival,
+                    'ring_the_doorbell' => $order->ring_the_doorbell,
+                    'notes' => $order->notes,
+                ];
+            },
+            'orders' => function () use ($request) {
+                if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
+                    return Order::with('menu', 'member')->where('status', 'pending')->get();
+                }
+            },
+            'inPreparationOrders' => function () use ($request) {
+                if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
+                    return Order::with('menu', 'member')->where('status', 'In Preparation')->get();
+                }
+            },
+            'readyForPickupOrders' => function () use ($request) {
+                if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
+                    return Order::with('menu', 'member')->where('status', 'ready for pickup')->get();
+                }
+            },
+            'completedOrders' => function () use ($request) {
+                if ($request->user() && $request->user()->role === 'kitchen' || 'rider') {
+                    return Order::with('menu', 'member')->where('status', 'completed')->get();
+                }
+            },
 
-        }
 
         ]);
     }
