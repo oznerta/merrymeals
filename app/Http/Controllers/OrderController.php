@@ -115,12 +115,16 @@ class OrderController extends Controller
     $orders = Order::with('menu', 'member')->where('status', 'pending')->get();
     $inPreparationOrders = Order::with('menu', 'member')->where('status', 'In Preparation')->get();
     $readyForPickupOrders = Order::with('menu', 'member')->where('status', 'ready for pickup')->get();
+    $pickingUpOrders = Order::with('menu', 'member')->where('status', 'picking up')->get();
+    $onItsWayOrders = Order::with('menu', 'member')->where('status', 'on its way')->get();
     $completedOrders = Order::with('menu', 'member')->where('status', 'completed')->get();
 
     return Inertia::render('Kitchens/Orders', [
         'orders' => $orders,
         'inPreparationOrders' => $inPreparationOrders,
         'readyForPickupOrders' => $readyForPickupOrders,
+        'pickingUpOrders' => $pickingUpOrders,
+        'onItsWayOrders' => $onItsWayOrders,
         'completedOrders' => $completedOrders
     ]);
 }
@@ -161,9 +165,20 @@ public function markAsCooked($orderId)
     return back()->with('success', 'Order marked as cooked.');
 }
 
+public function markAsPickingUp($orderId)
+{
+    $order = Order::findOrFail($orderId);
+    $order->status = 'picking up';
+    $order->rider_id = auth()->id();
+    $order->save();
+
+    return back()->with('success', 'Order marked as picking up.');
+}
+
 public function markAsOnItsWay($orderId)
 {
     $order = Order::findOrFail($orderId);
+    $order->rider_id = auth()->id();
     $order->status = 'on its way';
     $order->save();
 
@@ -179,7 +194,7 @@ public function markAsComplete($orderId)
     return back()->with('success', 'Order marked as complete.');
 }
 
-    
+
 
 
 }

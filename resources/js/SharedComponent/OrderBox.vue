@@ -40,6 +40,7 @@ export default {
     onAcceptOrder: Function,
     onCancelOrder: Function,
     onOrderCooked: Function,
+    onOrderPickingUp: Function,
     onOrderOnItsWay: Function,
     onOrderComplete: Function,
   },
@@ -95,8 +96,23 @@ export default {
       });
     };
 
+    const handleMarkAsPickingUp = () => {
+      form.post(`/rider/${props.orderId}/pickup`, {
+        onSuccess: (response) => {
+          if (response && response.props.success) {
+            props.onOrderCooked(props.orderId);
+          } else {
+            console.error(response.props.message || 'Unknown error');
+          }
+        },
+        onError: (errors) => {
+          console.error('Error marking as picking up');
+        }
+      });
+    };
+
     const handleMarkAsOnItsWay = () => {
-      form.post(`/orders/${props.orderId}/on-its-way`, {
+      form.post(`/rider/${props.orderId}/on-its-way`, {
         onSuccess: (response) => {
           if (response && response.props.success) {
             props.onOrderOnItsWay(props.orderId);
@@ -148,6 +164,7 @@ export default {
       handleCancelOrder,
       handleMarkAsCooked,
       handleMarkAsOnItsWay,
+      handleMarkAsPickingUp,
       handleMarkAsComplete,
       getButtonText,
     };
@@ -247,31 +264,37 @@ export default {
                 <DrawerClose>
                   <!-- Conditionally Render Buttons Based on Status -->
                   <form v-if="status === 'pending'" @submit.prevent="handleAcceptOrder" class="w-full">
-                    <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+                    <Button type="submit" class="w-full bg-primary text-accent hover:bg-secondary">
                       Accept Order
                     </Button>
                   </form>
 
                   <form v-if="status === 'pending'" @submit.prevent="handleCancelOrder" class="w-full">
-                    <Button type="submit" class="bg-accent border border-primary text-primary hover:bg-secondary hover:text-accent hover:border-none w-full">
+                    <Button type="submit" class="w-full border bg-accent border-primary text-primary hover:bg-secondary hover:text-accent hover:border-none">
                       Reject Order
                     </Button>
                   </form>
 
                   <form v-if="status === 'in preparation'" @submit.prevent="handleMarkAsCooked" class="w-full">
-                    <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+                    <Button type="submit" class="w-full bg-primary text-accent hover:bg-secondary">
                       Ready for Pickup
                     </Button>
                   </form>
 
-                  <form v-if="status === 'ready for pickup'" @submit.prevent="handleMarkAsOnItsWay" class="w-full">
-                    <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+                  <form v-if="status === 'ready for pickup'" @submit.prevent="handleMarkAsPickingUp" class="w-full">
+                    <Button type="submit" class="w-full bg-primary text-accent hover:bg-secondary">
+                     Pick up Order
+                    </Button>
+                  </form>
+
+                  <form v-if="status === 'picking up'" @submit.prevent="handleMarkAsOnItsWay" class="w-full">
+                    <Button type="submit" class="w-full bg-primary text-accent hover:bg-secondary">
                       Order On Its Way
                     </Button>
                   </form>
 
                   <form v-if="status === 'on its way'" @submit.prevent="handleMarkAsComplete" class="w-full">
-                    <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+                    <Button type="submit" class="w-full bg-primary text-accent hover:bg-secondary">
                       Mark as Completed
                     </Button>
                   </form>
