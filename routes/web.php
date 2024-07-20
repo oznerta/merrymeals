@@ -64,7 +64,7 @@ Route::middleware(['auth:member', 'verified'])->group(function () {
 
 
 
-    
+
 
 });
 
@@ -75,6 +75,8 @@ Route::middleware(['auth:rider', 'verified'])->group(function () {
     Route::inertia('/rider/orders','Riders/Orders')->name('rider.orders');
 
     Route::put('/rider/profile', [RiderController::class, 'updateRider'])->name('rider.update');
+    Route::post('/rider/{order}/pickup', [OrderController::class, 'markAsPickingUp'])->name('rider.pickup');
+    Route::post('/rider/{order}/on-its-way', [OrderController::class, 'markAsOnItsWay'])->name('rider.delivering');
 });
 
 // Kitchen routes
@@ -88,7 +90,7 @@ Route::middleware(['auth:kitchen', 'verified'])->group(function () {
 
     Route::post('/orders/{order}/accept', [OrderController::class, 'acceptOrder'])->name('orders.accept');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
-    
+
     // Add these routes for specific status updates
     Route::post('/orders/{order}/cooked', [OrderController::class, 'markAsCooked'])->name('orders.cooked');
     Route::post('/orders/{order}/on-its-way', [OrderController::class, 'markAsOnItsWay'])->name('orders.onItsWay');

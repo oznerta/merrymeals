@@ -1,86 +1,263 @@
-<script setup lang="ts">
+<script>
 import { ref } from "vue";
-import RiderLayout from "../Layouts/RiderLayout.vue";
+import KitchenLayout from "../Layouts/KitchenLayout.vue";
 import OrderBox from "../../SharedComponent/OrderBox.vue";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../shadcn/ui/tabs";
 import { ScrollArea } from "../../shadcn/ui/scroll-area";
 import { usePage } from "@inertiajs/vue3";
 import { Button } from "../../shadcn/ui/button";
 
-interface OrderDetails {
-    id: number;
-    menu: {
-        id: number;
-        meal_name: string;
-        description: string;
-        image: string;
-    };
-    member: {
-        id: number;
-        first_name: string;
-        last_name: string;
-        phone_number: string;
-        street_address: string;
-        city: string;
-        state: string;
-        postal_code: string;
-    };
-    notes?: string;
-}
+export default {
+    components: {
+        KitchenLayout,
+        OrderBox,
+        Tabs,
+        TabsContent,
+        TabsList,
+        TabsTrigger,
+        ScrollArea,
+        Button,
+    },
+    setup() {
+        const pageProps = usePage().props;
 
-// Access shared data from Inertia
-const pageProps = usePage().props as unknown as { orders?: OrderDetails[] };
-console.log("Orders from Inertia:", pageProps.orders);
+        const orders = ref(pageProps.orders);
+        const inPreparationOrders = ref(pageProps.inPreparationOrders || []);
+        const readyForPickupOrders = ref(pageProps.readyForPickupOrders || []);
+        const pickingUpOrders = ref(pageProps.pickingUpOrders || []);
+        const onItsWayOrder = ref(pageProps.onItsWayOrder || [])
+        const completedOrders = ref(pageProps.completedOrders || []);
 
-// Define methods for accepting and canceling orders
-const onAcceptOrder = (orderId: number) => {
-    console.log(`Accepting order with ID: ${orderId}`);
-};
+        const moveOrder = (orderId, fromList, toList) => {
+            const orderIndex = fromList.value.findIndex(
+                (order) => order.id === orderId
+            );
+            if (orderIndex !== -1) {
+                const [order] = fromList.value.splice(orderIndex, 1);
+                toList.value.push(order);
+            }
+        };
 
-const onCancelOrder = (orderId: number) => {
-    console.log(`Canceling order with ID: ${orderId}`);
+        const removeOrder = (orderId, fromList) => {
+            const orderIndex = fromList.value.findIndex(
+                (order) => order.id === orderId
+            );
+            if (orderIndex !== -1) {
+                fromList.value.splice(orderIndex, 1);
+            }
+        };
+
+        const onAcceptOrder = (orderId) => {
+            Inertia.post(
+                `/orders/${orderId}/accept`,
+                {},
+                {
+                    onSuccess: () => {
+                        moveOrder(orderId, orders, inPreparationOrders);
+                    },
+                    onError: () => {
+                        // Handle errors if necessary
+                    },
+                }
+            );
+        };
+
+        const onCancelOrder = (orderId) => {
+            Inertia.post(
+                `/orders/${orderId}/cancel`,
+                {},
+                {
+                    onSuccess: () => {
+                        removeOrder(orderId, orders);
+                        removeOrder(orderId, inPreparationOrders);
+                        removeOrder(orderId, readyForPickupOrders);
+                        removeOrder(orderId, completedOrders);
+                    },
+                    onError: () => {
+                        // Handle errors if necessary
+                    },
+                }
+            );
+        };
+
+        const onOrderCooked = (orderId) => {
+            Inertia.post(
+                `/orders/${orderId}/cooked`,
+                {},
+                {
+                    onSuccess: () => {
+                        moveOrder(
+                            orderId,
+                            inPreparationOrders,
+                            readyForPickupOrders
+                        );
+                    },
+                    onError: () => {
+                        // Handle errors if necessary
+                    },
+                }
+            );
+        };
+
+        const onOrderPickingUp = (orderId) => {
+            Inertia.post(
+                `/rider/${orderId}/pickup`,
+                {},
+                {
+                    onSuccess: () => {
+                        moveOrder(
+                            orderId,
+                           readyForPickupOrders,
+                           pickingUpOrders
+                        );
+                    },
+                    onError: () => {
+                        // Handle errors if necessary
+                    },
+                }
+            );
+        };
+
+        const onOrderOnItsWay = (orderId) => {
+            Inertia.post(
+                `/rider/${orderId}/on-its-way`,
+                {},
+                {
+                    onSuccess: () => {
+                        moveOrder(
+                            orderId,
+                            pickingUpOrders,
+                            onItsWayOrder
+                        );
+                    },
+                    onError: () => {
+                        // Handle errors if necessary
+                    },
+                }
+            );
+        };
+
+        const onOrderComplete = (orderId) => {
+            Inertia.post(
+                `/orders/${orderId}/complete`,
+                {},
+                {
+                    onSuccess: () => {
+                        moveOrder(orderId, completedOrders, completedOrders); // You might need to define a new list if there's another status after completion
+                    },
+                    onError: () => {
+                        // Handle errors if necessary
+                    },
+                }
+            );
+        };
+
+        return {
+            pageProps,
+            orders,
+            inPreparationOrders,
+            readyForPickupOrders,
+            onOrderPickingUp,
+            onItsWayOrder,
+            completedOrders,
+            onAcceptOrder,
+            onCancelOrder,
+            onOrderCooked,
+            onOrderOnItsWay,
+            onOrderComplete,
+        };
+    },
 };
 </script>
 
 <template>
     <div>
-        <RiderLayout />
-        <main
-            class="px-8 mt-20 md-custom:px-24 md-custom:mt-28 max-w-[1500px] mx-auto relative"
-        >
+        <KitchenLayout />
+        <main class="px-8 mt-20 md-custom:px-24 md-custom:mt-28 max-w-[1500px] mx-auto relative">
             <section class="orders">
                 <Tabs default-value="Order-list" class="w-full">
-                    <TabsList class="grid w-full grid-cols-2 gap-4">
-                        <TabsTrigger value="In-preparation"
-                            >In Preparation</TabsTrigger
-                        >
-                        <TabsTrigger value="Rf-pickup"
-                            >Ready for Pick-up</TabsTrigger
-                        >
-                        <TabsTrigger value="C-orders"
-                            >Completed Orders</TabsTrigger
-                        >
+                    <TabsList class="grid w-full grid-cols-4 gap-4">
+                        <TabsTrigger value="Order-list">Order List</TabsTrigger>
+                        <TabsTrigger value="Rf-pickup">Ready for Pick-up</TabsTrigger>
+                        <TabsTrigger value="delivering">Delivering</TabsTrigger>
+                        <TabsTrigger value="C-orders">Completed Orders</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent
-                        value="In-preparation"
-                        class="mt-10 border-t border-text"
-                    >
-                        <!-- In-preparation content -->
+                    <TabsContent value="Order-list" class="mt-10 border-t-2">
+                        <ScrollArea class="h-[700px] p-4 rounded-lg">
+                            <div class="flex flex-col gap-2 mt-2">
+                                <OrderBox v-for="order in orders" :key="order.id" :menuName="order.menu.meal_name"
+                                    :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
+                                        firstName: order.member.first_name,
+                                        lastName: order.member.last_name,
+                                        phoneNumber: order.member.phone_number,
+                                        streetAddress: order.member.street_address,
+                                        city: order.member.city,
+                                        state: order.member.state,
+                                        country: order.member.country,
+                                    }" :orderId="order.id" :status="order.status" :onAcceptOrder="onAcceptOrder" :onCancelOrder="onCancelOrder"
+                                    :onOrderCooked="onOrderCooked" :onOrderOnItsWay="onOrderOnItsWay"
+                                    :onOrderComplete="onOrderComplete" />
+
+                            </div>
+                        </ScrollArea>
                     </TabsContent>
 
-                    <TabsContent
-                        value="Rf-pickup"
-                        class="mt-10 border-t border-text"
-                    >
-                        <!-- Ready for Pick-up content -->
+                    <TabsContent value="Rf-pickup" class="mt-10 border-t-2">
+                        <ScrollArea class="h-[700px] p-4 rounded-lg">
+                            <div class="flex flex-col gap-2 mt-2">
+                                <OrderBox v-for="order in readyForPickupOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                    :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
+                                        firstName: order.member.first_name,
+                                        lastName: order.member.last_name,
+                                        phoneNumber: order.member.phone_number,
+                                        streetAddress: order.member.street_address,
+                                        city: order.member.city,
+                                        state: order.member.state,
+                                        country: order.member.country,
+                                    }" :orderId="order.id" :status="order.status" :onAcceptOrder="onAcceptOrder" :onCancelOrder="onCancelOrder"
+                                    :onOrderCooked="onOrderCooked" :onOrderOnItsWay="onOrderOnItsWay"
+                                    :onOrderComplete="onOrderComplete" />
+                            </div>
+                        </ScrollArea>
                     </TabsContent>
 
-                    <TabsContent
-                        value="C-orders"
-                        class="mt-10 border-t border-text"
-                    >
-                        <!-- Completed Orders content -->
+                    <TabsContent value="delivering" class="mt-10 border-t-2">
+                        <ScrollArea class="h-[700px] p-4 rounded-lg">
+                            <div class="flex flex-col gap-2 mt-2">
+                                <OrderBox v-for="order in readyForPickupOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                    :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
+                                        firstName: order.member.first_name,
+                                        lastName: order.member.last_name,
+                                        phoneNumber: order.member.phone_number,
+                                        streetAddress: order.member.street_address,
+                                        city: order.member.city,
+                                        state: order.member.state,
+                                        country: order.member.country,
+                                    }" :orderId="order.id" :status="order.status" :onAcceptOrder="onAcceptOrder" :onCancelOrder="onCancelOrder"
+                                    :onOrderOnItsWay="onOrderOnItsWay" :onPickingUpOrder="onOrderPickingUp"
+                                    :onOrderComplete="onOrderComplete" />
+                            </div>
+                        </ScrollArea>
+                    </TabsContent>
+
+                    <TabsContent value="C-orders" class="mt-10 border-t-2">
+                        <ScrollArea class="h-[700px] p-4 rounded-lg">
+                            <div class="flex flex-col gap-2 mt-2">
+                                <OrderBox v-for="order in completedOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                    :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
+                                        firstName: order.member.first_name,
+                                        lastName: order.member.last_name,
+                                        phoneNumber: order.member.phone_number,
+                                        streetAddress: order.member.street_address,
+                                        city: order.member.city,
+                                        state: order.member.state,
+                                        country: order.member.country,
+                                    }" :orderId="order.id" :status="order.status" :onAcceptOrder="onAcceptOrder" :onCancelOrder="onCancelOrder"
+                                    :onOrderCooked="onOrderCooked" :onOrderOnItsWay="onOrderOnItsWay"
+                                    :onOrderComplete="onOrderComplete" />
+                            </div>
+                        </ScrollArea>
                     </TabsContent>
                 </Tabs>
             </section>
