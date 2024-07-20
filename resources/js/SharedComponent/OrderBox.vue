@@ -1,3 +1,90 @@
+<script>
+import { ref } from 'vue';
+import { useForm } from '@inertiajs/vue3';
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerClose,
+} from '../shadcn/ui/drawer';
+import { Input } from '@/shadcn/ui/input';
+import { Textarea } from '@/shadcn/ui/textarea';
+import { ScrollArea } from '@/shadcn/ui/scroll-area';
+import { Button } from '@/shadcn/ui/button';
+
+export default {
+  components: {
+    Input,
+    Textarea,
+    Button,
+    ScrollArea,
+    Drawer,
+    DrawerTrigger,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerClose,
+  },
+  props: {
+    menuName: String,
+    memberName: String,
+    memberInfo: Object,
+    onAcceptOrder: Function,
+    onCancelOrder: Function,
+    orderId: Number
+  },
+  setup(props) {
+    const isOpen = ref(false);
+
+    const form = useForm({
+      orderId: props.orderId
+    });
+
+    const handleAcceptOrder = () => {
+      form.post(`/orders/${props.orderId}/accept`, {
+        onSuccess: (response) => {
+          if (response && response.props.success) {
+            props.onAcceptOrder(props.orderId);
+          } else {
+            console.error(response.props.message || 'Unknown error');
+          }
+        },
+        onError: (errors) => {
+          console.error('Error accepting order');
+        }
+      });
+    };
+
+    const handleCancelOrder = () => {
+      form.post(`/orders/${props.orderId}/cancel`, {
+        onSuccess: (response) => {
+          if (response && response.props.success) {
+            props.onCancelOrder(props.orderId);
+          } else {
+            console.error(response.props.message || 'Unknown error');
+          }
+        },
+        onError: (errors) => {
+          console.error('Error cancelling order');
+        }
+      });
+    };
+
+    return {
+      isOpen,
+      handleAcceptOrder,
+      handleCancelOrder,
+    };
+  }
+};
+</script>
+
 <template>
   <Drawer v-model:open="isOpen">
     <DrawerTrigger class="bg-accent border rounded-lg text-left p-4 hover:text-primary">
@@ -91,94 +178,19 @@
         </DrawerDescription>
       </DrawerHeader>
       <DrawerFooter>
-        <Button class="bg-primary text-accent hover:bg-secondary" @click="handleAcceptOrder">
-          Accept Order
-        </Button>
-        <Button
-          class="bg-accent border border-primary text-primary hover:bg-secondary hover:text-accent hover:border-none"
-          @click="handleCancelOrder">
-          Reject Order
-        </Button>
+        <form @submit.prevent="handleAcceptOrder" class="w-full">
+          <Button type="submit" class="bg-primary text-accent hover:bg-secondary w-full">
+            Accept Order
+          </Button>
+        </form>
+        <DrawerClose>
+          <form @submit.prevent="handleCancelOrder" class="w-full">
+            <Button type="submit" class="bg-accent border border-primary text-primary hover:bg-secondary hover:text-accent hover:border-none w-full">
+              Reject Order
+            </Button>
+          </form>
+        </DrawerClose>
       </DrawerFooter>
     </DrawerContent>
   </Drawer>
 </template>
-
-<script setup lang="ts">
-import { ref } from "vue";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../shadcn/ui/drawer";
-import { Input } from "@/shadcn/ui/input";
-import { Textarea } from "@/shadcn/ui/textarea";
-import { ScrollArea } from "@/shadcn/ui/scroll-area";
-import { Button } from "@/shadcn/ui/button";
-import axios from "axios";
-
-const props = defineProps<{
-  menuName: string;
-  memberName: string;
-  memberInfo: {
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    streetAddress: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    notes: string;
-  };
-  onAcceptOrder: (orderId: number) => void;
-  onCancelOrder: (orderId: number) => void;
-  orderId: number;
-}>();
-
-const isOpen = ref(false);
-
-const handleAcceptOrder = () => {
-  props.onAcceptOrder(props.orderId);
-};
-
-const handleCancelOrder = async () => {
-  try {
-    const response = await axios.post(`/api/orders/${props.orderId}/cancel`);
-    if (response.data.success) {
-      props.onCancelOrder(props.orderId);
-      console.log('Order cancelled');
-    } else {
-      console.error('Failed to cancel order:', response.data.error);
-    }
-  } catch (error) {
-    console.error('Failed to cancel order:', error.response?.data?.message || error.message);
-  }
-};
-
-console.log("Member Info:", props.memberInfo);
-</script>
-
-<style>
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.placeholder-style::placeholder {
-  color: #888;
-  /* Adjust color as needed */
-  font-size: 0.875rem;
-  /* Adjust size as needed */
-  font-style: italic;
-  /* Italicize for better readability */
-}
-</style>

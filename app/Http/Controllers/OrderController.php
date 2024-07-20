@@ -9,16 +9,12 @@ use App\Models\Menu;
 use App\Models\Kitchen;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    /**
-     * Display the order confirmation page.
-     */
-
-    /**
-     * Store a new order.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -62,22 +58,18 @@ class OrderController extends Controller
         );
     }
 
-
     public function showOrderConfirmation(Request $request, $restaurant_name, $menu_name)
     {
         $kitchen = Kitchen::where('restaurant_name', $restaurant_name)->firstOrFail();
         $menu = Menu::where('meal_name', $menu_name)->where('kitchen_id', $kitchen->id)->firstOrFail();
 
-        // Assuming orders are created before confirmation
         $order = Order::with(['member', 'menu', 'kitchen'])
             ->where('menu_id', $menu->id)
             ->where('kitchen_id', $kitchen->id)
             ->first();
 
-        // Fetch the authenticated user
         $user = Auth::user();
 
-        // Calculate distance if user has coordinates
         $distance = null;
         if ($user->latitude && $user->longitude) {
             $distance = $this->calculateDistance(
@@ -102,65 +94,90 @@ class OrderController extends Controller
                 'distance' => $distance,
             ],
         ]);
-
     }
 
     public function showWaitingPage($orderId)
-{
-    // Fetch the order details and other necessary data
-    $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
+    {
+        $order = Order::with(['member', 'menu', 'kitchen'])->find($orderId);
 
-    if (!$order) {
-        // Handle case where order is not found
+        if (!$order) {
+            return Inertia::render('Members/Order', [
+                'orderDetails' => null,
+            ]);
+        }
+
         return Inertia::render('Members/Order', [
-            'orderDetails' => null, // Ensure this is properly set
+            'orderDetails' => $order,
         ]);
     }
 
-    // Pass the order details to the view
-    return Inertia::render('Members/Order', [
-        'orderDetails' => $order,
-    ]);
-}
+    public function index()
+    {
+        $orders = Order::with('menu', 'member')->get();
 
-public function index()
-{
-    $orders = Order::with('menu', 'member')->get();
-
-    return Inertia::render('Kitchens/Orders', [
-        'orders' => $orders
-    ]);
-}
-
-
-public function acceptOrder($orderId)
-{
-    $order = Order::findOrFail($orderId);
-    $order->status = 'in preparation';
-    $order->save();
-
-    // Optionally: Notify the user or perform other actions
-}
-
-public function completeOrder($orderId)
-{
-    $order = Order::findOrFail($orderId);
-    $order->status = 'completed';
-    $order->save();
-
-    // Optionally: Notify the user or perform other actions
-}
-
-public function cancelOrder($orderId)
-{
-    $order = Order::findOrFail($orderId);
-    if ($order->status === 'pending') {
-        $order->status = 'cancelled';
-        $order->save();
-        return response()->json(['success' => true]);
-    } else {
-        return response()->json(['error' => 'Order cannot be cancelled at this stage.'], 403);
+        return Inertia::render('Kitchens/Orders', [
+            'orders' => $orders
+        ]);
     }
-}
 
+    public function acceptOrder($orderId)
+    {
+        $order = Order::find($orderId);
+    
+        if (!$order) {
+            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+        }
+    
+        $order->status = 'In Preparation';
+        $order->save();
+    
+        return response()->json(['success' => true, 'message' => 'Order is now in preparation']);
+    }
+
+    public function cancelOrder($orderId)
+    {
+        $order = Order::find($orderId);
+    
+        if (!$order) {
+            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+        }
+    
+        $order->delete(); // Remove the order completely
+    
+        return response()->json(['success' => true, 'message' => 'Order has been canceled']);
+    }
+    
+    
+    
+
+    public function completeOrder($orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        $order->status = 'completed';
+        $order->save();
+
+        return response()->json(['success' => true]);
+    }
+
+
+    public function updateOrderStatus(Request $request, $orderId)
+    {
+        $order = Order::find($orderId);
+        
+        if (!$order) {
+            return redirect()->back()->with('error', 'Order not found');
+        }
+
+        $status = $request->input('status');
+        $validStatuses = ['pending', 'in preparation', 'ready for pickup', 'on its way', 'completed', 'cancelled'];
+
+        if (!in_array($status, $validStatuses)) {
+            return redirect()->back()->with('error', 'Invalid status');
+        }
+
+        $order->status = $status;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Order status updated successfully');
+    }
 }

@@ -60,6 +60,9 @@ Route::middleware(['auth:member', 'verified'])->group(function () {
             'orderId' => $order ? $order->id : null,
         ]);
     });
+
+
+
     
 
 });
@@ -77,6 +80,11 @@ Route::middleware(['auth:kitchen', 'verified'])->group(function () {
     Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
     Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
     Route::put('/kitchen/profile', [MenuController::class, 'updateKitchen'])->name('kitchen.update');
+
+    Route::post('/orders/{order}/accept', [OrderController::class, 'acceptOrder'])->name('orders.accept');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancelOrder'])->name('orders.cancel');
+    
+    Route::post('/orders/{orderId}/update-status', [OrderController::class, 'updateOrderStatus'])->name('orders.updateStatus');
 
 });
 
