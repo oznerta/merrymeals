@@ -25,7 +25,7 @@ export default {
         const inPreparationOrders = ref(pageProps.inPreparationOrders || []);
         const readyForPickupOrders = ref(pageProps.readyForPickupOrders || []);
         const pickingUpOrders = ref(pageProps.pickingUpOrders || []);
-        const onItsWayOrder = ref(pageProps.onItsWayOrder || [])
+        const onItsWayOrder = ref(pageProps.onItsWayOrder || []);
         const completedOrders = ref(pageProps.completedOrders || []);
 
         const moveOrder = (orderId, fromList, toList) => {

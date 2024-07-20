@@ -389,7 +389,7 @@ export default {
                     </form>
 
                     <form
-                        v-if="status === 'ready for pickup' && $page.props.auth.user.role === 'rider'"
+                        v-if="status === 'ready for pickup'"
                         @submit.prevent="handleMarkAsPickingUp"
                         class="w-full"
                     >
@@ -402,7 +402,7 @@ export default {
                     </form>
 
                     <form
-                        v-if="status === 'picking up'  && $page.props.auth.user.role === 'rider'"
+                        v-if="status === 'picking up'"
                         @submit.prevent="handleMarkAsOnItsWay"
                         class="w-full"
                     >
