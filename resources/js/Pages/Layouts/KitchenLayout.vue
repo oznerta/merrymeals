@@ -42,14 +42,14 @@
                                 </a>
                             </DropdownMenuItem>
 
-                            <DropdownMenuItem>
-                                <a
-                                    href="/kitchen/orders"
-                                    class="hover:text-primary"
-                                >
-                                    Menu
-                                </a>
-                            </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <a
+                                href="/kitchen/menu"
+                                class="hover:text-primary"
+                            >
+                                Menu
+                            </a>
+                        </DropdownMenuItem>
 
                             <DropdownMenuItem>
                                 <a

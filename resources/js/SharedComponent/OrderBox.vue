@@ -86,86 +86,148 @@ export default {
 </script>
 
 <template>
-  <Drawer v-model:open="isOpen">
-    <DrawerTrigger class="bg-accent border rounded-lg text-left p-4 hover:text-primary">
-      <div class="flex justify-between items-center">
-        <div>
-          <p class="text-base">{{ menuName }}</p>
-          <p class="text-small">{{ memberName }}</p>
-        </div>
-        <div>
-          <p class="text-tiny">Accept</p>
-        </div>
-      </div>
-    </DrawerTrigger>
-    <DrawerContent>
-      <DrawerHeader>
-        <DrawerTitle class="text-primary text-center mb-5">Order</DrawerTitle>
-        <DrawerDescription>
-          <ScrollArea class="h-[700px] max-w-[500px] mx-auto p-4">
-            <div class="grid gap-4">
-              <div
-                class="bg-accent grid border rounded-lg overflow-hidden mb-4 md-custom:grid-cols-2 gap-2 relative max-w-[500px]">
-                <div class="p-4">
-                  <h3 class="text-base text-primary font-semibold mb-2">
-                    Meal Name
-                  </h3>
-                  <p class="text-gray-600 text-tiny max-w-sm break-words">
-                    {{ menuName }}
-                  </p>
+    <Drawer v-model:open="isOpen">
+        <DrawerTrigger
+            class="p-4 text-left border rounded-lg bg-accent hover:text-primary"
+        >
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-base">{{ menuName }}</p>
+                    <p class="text-small">{{ memberName }}</p>
                 </div>
-                <div class="overflow-hidden my-auto p-3 rounded-lg">
-                  <img src="../../assets/pic1.jpg" alt="Image"
-                    class="w-full md-custom:w-42 h-32 rounded-lg md-custom:h-40 object-cover" />
+                <div>
+                    <p class="text-tiny">Accept</p>
                 </div>
-              </div>
-              <div class="flex flex-col gap-2 mb-[150px]">
-                <p class="text-primary mb-5">Customer Personal Information</p>
-                <div class="form-group">
-                  <label for="firstName">First Name</label>
-                  <Input id="firstName" :placeholder="'First Name: ' +
-                    memberInfo.firstName
-                    " disabled class="border-primary placeholder-style" />
-                </div>
+            </div>
+        </DrawerTrigger>
+        <DrawerContent>
+            <DrawerHeader>
+                <DrawerTitle class="mb-5 text-center text-primary"
+                    >Order</DrawerTitle
+                >
+                <DrawerDescription>
+                    <ScrollArea class="h-[700px] max-w-[500px] mx-auto p-4">
+                        <div class="grid gap-4">
+                            <div
+                                class="bg-accent grid border rounded-lg overflow-hidden mb-4 md-custom:grid-cols-2 gap-2 relative max-w-[500px]"
+                            >
+                                <div class="p-4">
+                                    <h3
+                                        class="mb-2 text-base font-semibold text-primary"
+                                    >
+                                        Meal Name
+                                    </h3>
+                                    <p
+                                        class="max-w-sm text-gray-600 break-words text-tiny"
+                                    >
+                                        {{ menuName }}
+                                    </p>
+                                </div>
+                                <div
+                                    class="p-3 my-auto overflow-hidden rounded-lg"
+                                >
+                                    <img
+                                        src="../../assets/pic1.jpg"
+                                        alt="Image"
+                                        class="object-cover w-full h-32 rounded-lg md-custom:w-42 md-custom:h-40"
+                                    />
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2 mb-[150px]">
+                                <p class="mb-5 text-primary">
+                                    Customer Personal Information
+                                </p>
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <Input
+                                        id="firstName"
+                                        :placeholder="
+                                            'First Name: ' +
+                                            memberInfo.firstName
+                                        "
+                                        disabled
+                                        class="border-primary placeholder-style"
+                                    />
+                                </div>
 
-                <div class="form-group">
-                  <label for="lastName">Last Name</label>
-                  <Input id="lastName" :placeholder="'Last Name: ' + memberInfo.lastName
-                    " disabled class="border-primary placeholder-style" />
-                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <Input
+                                        id="lastName"
+                                        :placeholder="
+                                            'Last Name: ' + memberInfo.lastName
+                                        "
+                                        disabled
+                                        class="border-primary placeholder-style"
+                                    />
+                                </div>
 
-                <div class="form-group">
-                  <label for="phoneNumber">Phone Number</label>
-                  <Input id="phoneNumber" :placeholder="'Phone Number: ' +
-                    memberInfo.phoneNumber
-                    " disabled class="border-primary placeholder-style" />
-                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber"
+                                        >Phone Number</label
+                                    >
+                                    <Input
+                                        id="phoneNumber"
+                                        :placeholder="
+                                            'Phone Number: ' +
+                                            memberInfo.phoneNumber
+                                        "
+                                        disabled
+                                        class="border-primary placeholder-style"
+                                    />
+                                </div>
 
-                <div class="form-group">
-                  <label for="streetAddress">Street Address</label>
-                  <Input id="streetAddress" :placeholder="'Street Address: ' +
-                    memberInfo.streetAddress
-                    " disabled class="border-primary placeholder-style" />
-                </div>
+                                <div class="form-group">
+                                    <label for="streetAddress"
+                                        >Street Address</label
+                                    >
+                                    <Input
+                                        id="streetAddress"
+                                        :placeholder="
+                                            'Street Address: ' +
+                                            memberInfo.streetAddress
+                                        "
+                                        disabled
+                                        class="border-primary placeholder-style"
+                                    />
+                                </div>
 
-                <div class="form-group">
-                  <label for="city">City</label>
-                  <Input id="city" :placeholder="'City: ' + memberInfo.city
-                    " disabled class="border-primary placeholder-style" />
-                </div>
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <Input
+                                        id="city"
+                                        :placeholder="
+                                            'City: ' + memberInfo.city
+                                        "
+                                        disabled
+                                        class="border-primary placeholder-style"
+                                    />
+                                </div>
 
-                <div class="form-group">
-                  <label for="state">State</label>
-                  <Input id="state" :placeholder="'State: ' + memberInfo.state
-                    " disabled class="border-primary placeholder-style" />
-                </div>
+                                <div class="form-group">
+                                    <label for="state">State</label>
+                                    <Input
+                                        id="state"
+                                        :placeholder="
+                                            'State: ' + memberInfo.state
+                                        "
+                                        disabled
+                                        class="border-primary placeholder-style"
+                                    />
+                                </div>
 
-                <div class="form-group">
-                  <label for="postalCode">Postal Code</label>
-                  <Input id="postalCode" :placeholder="'Postal Code: ' +
-                    memberInfo.postalCode
-                    " disabled class="border-primary placeholder-style" />
-                </div>
+                                <div class="form-group">
+                                    <label for="postalCode">Postal Code</label>
+                                    <Input
+                                        id="postalCode"
+                                        :placeholder="
+                                            'Postal Code: ' +
+                                            memberInfo.postalCode
+                                        "
+                                        disabled
+                                        class="border-primary placeholder-style"
+                                    />
+                                </div>
 
                 <div class="form-group">
                   <label for="notes">Notes</label>

@@ -51,8 +51,8 @@ export default {
                         <TabsTrigger value="C-orders">Completed Orders</TabsTrigger>
                     </TabsList>
 
-                    <TabsContent value="Order-list" class="border-t-2 mt-10">
-                        <ScrollArea class="h-[700px] p-4 rounded-lg">
+                    <TabsContent value="Order-list" class="mt-10 border-t-2">
+                            <ScrollArea class="h-[700px] p-4 rounded-lg">
                             <div class="flex flex-col gap-2 mt-2">
                                 <OrderBox
                                     v-for="order in pageProps.orders"
@@ -75,6 +75,7 @@ export default {
                                 />
                             </div>
                         </ScrollArea>
+
                     </TabsContent>
 
                     <TabsContent value="In-preparation" class="border-t border-text mt-10">
