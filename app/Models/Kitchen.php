@@ -28,7 +28,7 @@ class Kitchen extends Authenticatable
         'state',
         'phone_number',
         'password',
-        'latitude', 
+        'latitude',
         'longitude',
     ];
 
@@ -58,5 +58,10 @@ class Kitchen extends Authenticatable
     public function menus()
     {
         return $this->hasMany(Menu::class);
+    }
+
+    public function isKitchen()
+    {
+        return $this->role === 'kitchen';
     }
 }

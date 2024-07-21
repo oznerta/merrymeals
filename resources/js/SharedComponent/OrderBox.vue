@@ -32,6 +32,10 @@ export default {
         DrawerClose,
     },
     props: {
+        hideButton:{
+            type:Boolean,
+            required:true,
+        },
         menuName: String,
         memberName: String,
         memberInfo: Object,
@@ -389,7 +393,7 @@ export default {
                     </form>
 
                     <form
-                        v-if="status === 'ready for pickup'"
+                        v-if="status === 'ready for pickup' && !hideButton"
                         @submit.prevent="handleMarkAsPickingUp"
                         class="w-full"
                     >

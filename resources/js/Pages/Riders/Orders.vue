@@ -18,6 +18,11 @@ export default {
         ScrollArea,
         Button,
     },
+    data(){
+        return{
+            shouldHideButton:false,
+        };
+    },
     setup() {
         const pageProps = usePage().props;
 
@@ -218,7 +223,7 @@ export default {
                                         state: order.member.state,
                                         country: order.member.country,
                                     }" :orderId="order.id" :status="order.status" :onAcceptOrder="onAcceptOrder" :onCancelOrder="onCancelOrder"
-                                    :onOrderCooked="onOrderCooked" :onOrderOnItsWay="onOrderOnItsWay"
+                                    :onOrderCooked="onOrderCooked" :onOrderOnItsWay="onOrderOnItsWay" :hideButton="shouldHideButton"
                                     :onOrderComplete="onOrderComplete" />
                             </div>
                         </ScrollArea>

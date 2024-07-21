@@ -194,7 +194,13 @@ public function markAsComplete($orderId)
     return Redirect::route('member.restaurant');
 }
 
+public function ifKitchen()
+{
+    $user = Kitchen::user(); // Get the authenticated user
 
-
+    return Inertia::render('OrderBox', [
+        'shouldHideButton' => $user->isKitchen(),
+    ]);
+}
 
 }
