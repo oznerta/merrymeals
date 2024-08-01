@@ -171,7 +171,7 @@ export default {
                     <TabsContent value="Order-list" class="mt-10 border-t-2">
                         <ScrollArea class="h-[700px] p-4 rounded-lg">
                             <div class="flex flex-col gap-2 mt-2">
-                                <OrderBox v-for="order in orders" :key="order.id" :menuName="order.menu.meal_name"
+                                <OrderBox v-for="order in orders" :key="order.id" :menuName="order.menu.meal_name" :menuDescription="order.menu.description"
                                     :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
                                         firstName: order.member.first_name,
                                         lastName: order.member.last_name,
@@ -191,7 +191,7 @@ export default {
                     <TabsContent value="In-preparation" class="mt-10 border-t-2">
                         <ScrollArea class="h-[700px] p-4 rounded-lg">
                             <div class="flex flex-col gap-2 mt-2">
-                                <OrderBox v-for="order in inPreparationOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                <OrderBox v-for="order in inPreparationOrders" :key="order.id" :menuName="order.menu.meal_name" :menuDescription="order.menu.description"
                                     :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
                                         firstName: order.member.first_name,
                                         lastName: order.member.last_name,
@@ -210,7 +210,7 @@ export default {
                     <TabsContent value="Rf-pickup" class="mt-10 border-t-2">
                         <ScrollArea class="h-[700px] p-4 rounded-lg">
                             <div class="flex flex-col gap-2 mt-2">
-                                <OrderBox v-for="order in readyForPickupOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                <OrderBox v-for="order in readyForPickupOrders" :key="order.id" :menuName="order.menu.meal_name" :menuDescription="order.menu.description"
                                     :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
                                         firstName: order.member.first_name,
                                         lastName: order.member.last_name,
@@ -229,7 +229,7 @@ export default {
                     <TabsContent value="delivering" class="mt-10 border-t-2">
                         <ScrollArea class="h-[700px] p-4 rounded-lg">
                             <div class="flex flex-col gap-2 mt-2">
-                                <OrderBox v-for="order in onItsWayOrder" :key="order.id" :menuName="order.menu.meal_name"
+                                <OrderBox v-for="order in onItsWayOrder" :key="order.id" :menuName="order.menu.meal_name" :menuDescription="order.menu.description"
                                     :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
                                         firstName: order.member.first_name,
                                         lastName: order.member.last_name,
@@ -248,7 +248,7 @@ export default {
                     <TabsContent value="C-orders" class="mt-10 border-t-2">
                         <ScrollArea class="h-[700px] p-4 rounded-lg">
                             <div class="flex flex-col gap-2 mt-2">
-                                <OrderBox v-for="order in completedOrders" :key="order.id" :menuName="order.menu.meal_name"
+                                <OrderBox v-for="order in completedOrders" :key="order.id" :menuName="order.menu.meal_name" :menuDescription="order.menu.description"
                                     :memberName="`${order.member.first_name} ${order.member.last_name}`" :memberInfo="{
                                         firstName: order.member.first_name,
                                         lastName: order.member.last_name,

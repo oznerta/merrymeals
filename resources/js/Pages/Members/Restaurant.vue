@@ -10,7 +10,7 @@
                     <div v-if="nearbyKitchens.length === 0">
                         <p>No nearby restaurants found.</p>
                     </div>
-                    <div v-else>
+                    <div v-else class="grid gap-4 md-custom:grid-cols-2 lg-custom:grid-cols-3">
                         <div v-for="kitchen in nearbyKitchens" :key="kitchen.id" class="mb-6">
                             <KitchenCard :kitchenName="kitchen.restaurant_name" :kitchenStreet="kitchen.street_address"
                                 :kitchenCity="kitchen.city" :kitchenState="kitchen.state"
@@ -26,7 +26,7 @@
                         <div v-if="allKitchens.length === 0">
                             <p>No other restaurants found.</p>
                         </div>
-                        <div v-else>
+                        <div v-else class="grid gap-4 md-custom:grid-cols-2 lg-custom:grid-cols-3">
                             <div v-for="kitchen in allKitchens" :key="kitchen.id" class="mb-6">
                                 <KitchenCard :kitchenName="kitchen.restaurant_name"
                                     :kitchenStreet="kitchen.street_address" :kitchenCity="kitchen.city"

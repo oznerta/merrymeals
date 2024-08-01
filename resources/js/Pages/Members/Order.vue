@@ -42,12 +42,19 @@
               <div class="tracking-step">
                 <div :class="['step-circle', getStepClass(3)]"></div>
                 <div class="step-content">
+                  <h3 class="step-title">Picking Up</h3>
+                  <p class="step-description">Delivery rider is picking up your order.</p>
+                </div>
+              </div>
+              <div class="tracking-step">
+                <div :class="['step-circle', getStepClass(4)]"></div>
+                <div class="step-content">
                   <h3 class="step-title">On Its Way</h3>
                   <p class="step-description">Your order is on its way to you.</p>
                 </div>
               </div>
               <div class="tracking-step">
-                <div :class="['step-circle', getStepClass(4)]"></div>
+                <div :class="['step-circle', getStepClass(5)]"></div>
                 <div class="step-content">
                   <h3 class="step-title">Completed</h3>
                   <p class="step-description">Your order has been completed.</p>
@@ -104,8 +111,9 @@ export default {
         'Order Received': 0,
         'in preparation': 1,
         'ready for pickup': 2,
-        'on its way': 3,
-        'completed': 4,
+        'picking up': 3,
+        'on its way': 4,
+        'completed': 5,
       };
       const currentStatusIndex = statusMap[this.orderDetails.status.trim()] ?? 0;
       return stepIndex <= currentStatusIndex ? 'completed' : 'pending';

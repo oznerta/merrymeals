@@ -37,6 +37,7 @@ export default {
             required:true,
         },
         menuName: String,
+        menuDescription: String,
         memberName: String,
         memberInfo: Object,
         orderId: Number,
@@ -220,12 +221,12 @@ export default {
                                     <h3
                                         class="mb-2 text-base font-semibold text-primary"
                                     >
-                                        Meal Name
+                                        {{ menuName }}
                                     </h3>
                                     <p
                                         class="max-w-sm text-gray-600 break-words text-tiny"
                                     >
-                                        {{ menuName }}
+                                        {{ menuDescription }}
                                     </p>
                                 </div>
                                 <div
